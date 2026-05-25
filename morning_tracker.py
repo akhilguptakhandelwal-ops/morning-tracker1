@@ -1,7 +1,7 @@
 """
 Morning Intelligence Tracker
-─────────────────────────────
-Scrapes YouTube + websites → Gemini AI summary → Google Apps Script email delivery
+âââââââââââââââââââââââââââââ
+Scrapes YouTube + websites â Gemini AI summary â Google Apps Script email delivery
 No SMTP. No app passwords. Pure Google.
 """
 
@@ -19,9 +19,9 @@ import requests
 from bs4 import BeautifulSoup
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 # Logging
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s  [%(levelname)-8s]  %(message)s",
@@ -31,9 +31,9 @@ log = logging.getLogger(__name__)
 
 DB_PATH = os.environ.get("TRACKER_DB", "tracker.db")
 
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 # 1. DATABASE LAYER
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 
 def get_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
@@ -71,13 +71,13 @@ def init_db() -> None:
                 (src_type, name, identifier),
             )
 
-        for email in ("gupta_akhil@ymail.com", "akhilgupta.khandelwal@gmail.com"):
+        for email in ("gupta_akhil@ymail.com"):
             conn.execute(
                 "INSERT OR IGNORE INTO recipients (email) VALUES (?)", (email,)
             )
 
         conn.commit()
-    log.info("Database initialised → %s", DB_PATH)
+    log.info("Database initialised â %s", DB_PATH)
 
 
 def get_sources(conn):
@@ -93,9 +93,9 @@ def update_last_scraped(conn, source_id: int, scraped_id: str) -> None:
     conn.commit()
 
 
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 # 2. INGESTION LAYER
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 
 HEADERS = {
     "User-Agent": (
@@ -145,7 +145,7 @@ def scrape_youtube(identifier: str) -> Optional[dict]:
     try:
         transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
         raw_text = " ".join(c["text"] for c in transcript_list)
-        log.info("YouTube '%s' — transcript fetched (%d chars)", title, len(raw_text))
+        log.info("YouTube '%s' â transcript fetched (%d chars)", title, len(raw_text))
     except (TranscriptsDisabled, NoTranscriptFound):
         log.warning("No transcript for video %s", video_id)
         raw_text = f"[No transcript available for: {title}]"
@@ -177,34 +177,34 @@ def scrape_website(identifier: str) -> Optional[dict]:
     raw_text = re.sub(r"\s{3,}", "\n", "\n".join(blocks[:120]))
     content_id = hashlib.md5(raw_text[:500].encode()).hexdigest()[:12]
 
-    log.info("Website '%s' — %d chars scraped", title, len(raw_text))
+    log.info("Website '%s' â %d chars scraped", title, len(raw_text))
     return {"id": content_id, "title": title, "url": identifier, "raw_text": raw_text}
 
 
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 # 3. AI PROCESSING LAYER (Gemini)
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 
 SYSTEM_INSTRUCTION = textwrap.dedent("""\
     You are an expert intelligence analyst preparing a concise daily brief for a busy finance professional.
 
     Given raw scraped content from a YouTube video transcript or a website, you must:
     1. Identify the core message, announcement, or update being communicated.
-    2. Extract the 3–5 most important points or takeaways.
+    2. Extract the 3â5 most important points or takeaways.
     3. Flag any actionable items, deadlines, or regulatory changes.
     4. Output a structured summary using this exact HTML format (no markdown fences):
 
     <div class="ai-summary">
-      <h3>📌 Core Message</h3>
+      <h3>ð Core Message</h3>
       <p>[one sentence describing the main point]</p>
-      <h3>🔑 Key Takeaways</h3>
+      <h3>ð Key Takeaways</h3>
       <ul>
         <li>[takeaway 1]</li>
         <li>[takeaway 2]</li>
         <li>[takeaway 3]</li>
       </ul>
-      <h3>⚡ Action Items / Alerts</h3>
-      <p>[deadlines, filings, or must-do items — or "None identified" if absent]</p>
+      <h3>â¡ Action Items / Alerts</h3>
+      <p>[deadlines, filings, or must-do items â or "None identified" if absent]</p>
     </div>
 
     Keep the language professional, concise, and relevant to Indian finance/taxation context where applicable.
@@ -215,8 +215,8 @@ SYSTEM_INSTRUCTION = textwrap.dedent("""\
 def summarise_with_gemini(source_name: str, raw_text: str) -> str:
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        log.warning("GEMINI_API_KEY not set — skipping AI summary")
-        return '<div class="ai-summary"><p><em>⚠️ AI summary unavailable — GEMINI_API_KEY not configured.</em></p></div>'
+        log.warning("GEMINI_API_KEY not set â skipping AI summary")
+        return '<div class="ai-summary"><p><em>â ï¸ AI summary unavailable â GEMINI_API_KEY not configured.</em></p></div>'
 
     try:
         from google import genai
@@ -232,12 +232,12 @@ def summarise_with_gemini(source_name: str, raw_text: str) -> str:
         return summary_html
     except Exception as exc:
         log.error("Gemini error for '%s': %s", source_name, exc)
-        return f'<div class="ai-summary"><p><em>⚠️ Gemini failed: {exc}</em></p></div>'
+        return f'<div class="ai-summary"><p><em>â ï¸ Gemini failed: {exc}</em></p></div>'
 
 
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 # 4. EMAIL BUILDER
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 
 EMAIL_CSS = """
 <style>
@@ -279,7 +279,7 @@ def build_html_email(reports: list[dict], run_date: str) -> str:
             </div>
           </div>
           <p style="color:#555;font-size:13px;margin:0 0 12px">
-            <strong>📄 Latest:</strong> {r['content_title']}
+            <strong>ð Latest:</strong> {r['content_title']}
           </p>
           {r['summary_html']}
         </div>"""
@@ -290,36 +290,36 @@ def build_html_email(reports: list[dict], run_date: str) -> str:
 <body>
 <div class="wrapper">
   <div class="header">
-    <h1>🌅 Morning Intelligence Digest</h1>
-    <p>{run_date} · Auto-generated by Morning Intelligence Tracker</p>
+    <h1>ð Morning Intelligence Digest</h1>
+    <p>{run_date} Â· Auto-generated by Morning Intelligence Tracker</p>
   </div>
   {cards}
   <div class="footer">
     You are receiving this because you are subscribed to the Morning Intelligence Tracker.<br>
-    Built with ♥ by Akhil Gupta · Plant Finance Head · Safari Manufacturing Ltd.
+    Built with â¥ by Akhil Gupta Â· Plant Finance Head Â· Safari Manufacturing Ltd.
   </div>
 </div>
 </body>
 </html>"""
 
 
-# ─────────────────────────────────────────────
-# 5. DELIVERY LAYER — Google Apps Script
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
+# 5. DELIVERY LAYER â Google Apps Script
+# âââââââââââââââââââââââââââââââââââââââââââââ
 
 def send_via_apps_script(recipients: list[str], html_body: str, run_date: str) -> bool:
     """
     POST the email payload to a Google Apps Script Web App.
-    The Apps Script handles actual Gmail sending — no SMTP, no passwords.
+    The Apps Script handles actual Gmail sending â no SMTP, no passwords.
     Set GAS_WEBHOOK_URL as a GitHub Secret / environment variable.
     """
     webhook_url = os.environ.get("GAS_WEBHOOK_URL")
     if not webhook_url:
-        log.error("GAS_WEBHOOK_URL not set — cannot send email.")
+        log.error("GAS_WEBHOOK_URL not set â cannot send email.")
         return False
 
     payload = {
-        "subject": f"🌅 Morning Intelligence Digest — {run_date}",
+        "subject": f"ð Morning Intelligence Digest â {run_date}",
         "htmlBody": html_body,
         "recipients": recipients,
         "token": os.environ.get("GAS_SECRET_TOKEN", ""),
@@ -333,7 +333,7 @@ def send_via_apps_script(recipients: list[str], html_body: str, run_date: str) -
             timeout=30,
         )
         if resp.status_code == 200:
-            log.info("✅ Email dispatched via Apps Script to: %s", ", ".join(recipients))
+            log.info("â Email dispatched via Apps Script to: %s", ", ".join(recipients))
             return True
         else:
             log.error("Apps Script returned %s: %s", resp.status_code, resp.text[:300])
@@ -343,14 +343,14 @@ def send_via_apps_script(recipients: list[str], html_body: str, run_date: str) -
         return False
 
 
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 # 6. ORCHESTRATOR
-# ─────────────────────────────────────────────
+# âââââââââââââââââââââââââââââââââââââââââââââ
 
 def run() -> None:
-    log.info("══════════════════════════════════════")
-    log.info("  Morning Intelligence Tracker — START")
-    log.info("══════════════════════════════════════")
+    log.info("ââââââââââââââââââââââââââââââââââââââ")
+    log.info("  Morning Intelligence Tracker â START")
+    log.info("ââââââââââââââââââââââââââââââââââââââ")
 
     init_db()
 
@@ -364,29 +364,29 @@ def run() -> None:
         recipients = get_recipients(conn)
 
         if not recipients:
-            log.warning("No recipients configured — aborting.")
+            log.warning("No recipients configured â aborting.")
             return
 
         for source in sources:
             src_id, src_type, src_name = source["id"], source["type"], source["name"]
             src_url, last_id = source["identifier"], source["last_scraped_id"]
 
-            log.info("── Processing [%s] %s", src_type.upper(), src_name)
+            log.info("ââ Processing [%s] %s", src_type.upper(), src_name)
 
             scraper = SCRAPERS.get(src_type)
             if not scraper:
-                log.warning("Unknown type '%s' — skipping.", src_type)
+                log.warning("Unknown type '%s' â skipping.", src_type)
                 continue
 
             result = scraper(src_url)
             if not result:
-                log.warning("Scraping failed for '%s' — skipping.", src_name)
+                log.warning("Scraping failed for '%s' â skipping.", src_name)
                 continue
 
             content_id = result["id"]
 
             if content_id == last_id:
-                log.info("No new content for '%s' — skipping.", src_name)
+                log.info("No new content for '%s' â skipping.", src_name)
                 continue
 
             summary_html = summarise_with_gemini(src_name, result["raw_text"])
@@ -400,19 +400,19 @@ def run() -> None:
             })
 
             update_last_scraped(conn, src_id, content_id)
-            log.info("State updated for '%s' → %s", src_name, content_id)
+            log.info("State updated for '%s' â %s", src_name, content_id)
 
     if not reports:
-        log.info("No new content across all sources — no email sent.")
+        log.info("No new content across all sources â no email sent.")
         return
 
-    log.info("Composing digest with %d report(s)…", len(reports))
+    log.info("Composing digest with %d report(s)â¦", len(reports))
     html_body = build_html_email(reports, run_date)
     send_via_apps_script(recipients, html_body, run_date)
 
-    log.info("══════════════════════════════════════")
-    log.info("  Morning Intelligence Tracker — DONE ")
-    log.info("══════════════════════════════════════")
+    log.info("ââââââââââââââââââââââââââââââââââââââ")
+    log.info("  Morning Intelligence Tracker â DONE ")
+    log.info("ââââââââââââââââââââââââââââââââââââââ")
 
 
 if __name__ == "__main__":
