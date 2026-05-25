@@ -62,13 +62,10 @@ def init_db():
         )
 
         sources_seed = [
-            (
-                "youtube",
-                "Aishwarya Srinivasan - AI with Aish",
-                "https://www.youtube.com/feeds/videos.xml?channel_id=UCzd4ZN716evEjtbJERBMTfg",
-                "AI",
-            ),
-            ("website", "Taxguru", "https://taxguru.in", "Finance & Taxation"),
+            ("website", "Taxguru",
+             "https://taxguru.in"),
+            ("youtube", "FinTaxPro",
+             "https://www.youtube.com/feeds/videos.xml?channel_id=UCrzxy3Ij6P-SNVNbK1Z7Xzw"),
         ]
         for src_type, name, identifier, category in sources_seed:
             conn.execute(
