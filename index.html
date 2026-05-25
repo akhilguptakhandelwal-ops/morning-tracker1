@@ -8,176 +8,146 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0d1117; --surface: #111827; --card: #161f2e; --border: #1e2d42;
-    --accent: #3b82f6; --accent2: #06b6d4; --green: #10b981; --red: #ef4444;
-    --amber: #f59e0b; --muted: #4b5563; --text: #e2e8f0; --text-dim: #94a3b8;
-    --glow: rgba(59,130,246,0.15);
+    --ink:#0d1117;--surface:#111827;--card:#161f2e;--border:#1e2d42;
+    --accent:#3b82f6;--accent2:#06b6d4;--green:#10b981;--red:#ef4444;
+    --amber:#f59e0b;--muted:#4b5563;--text:#e2e8f0;--text-dim:#94a3b8;
+    --glow:rgba(59,130,246,0.15);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', sans-serif; background: var(--ink); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-  body::before {
-    content: ''; position: fixed; inset: 0; z-index: 0;
-    background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none;
-  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
 
   /* LOGIN */
-  #login-screen { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: var(--ink); }
-  .login-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 48px 44px; width: 380px; box-shadow: 0 0 80px rgba(59,130,246,0.08); position: relative; overflow: hidden; }
-  .login-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
-  .login-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-  .login-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 24px; color: var(--text); margin-bottom: 8px; }
-  .login-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 32px; }
-  .field-label { font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
-  input[type="password"], input[type="text"], input[type="email"], select {
-    width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-    padding: 12px 14px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s; margin-bottom: 20px;
-  }
-  input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 8px; border: none; cursor: pointer; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: .3px; transition: all 0.2s; }
-  .btn-primary { background: var(--accent); color: #fff; width: 100%; justify-content: center; }
-  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
-  .btn-run { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 14px 28px; font-size: 15px; border-radius: 10px; box-shadow: 0 4px 20px rgba(16,185,129,0.3); }
-  .btn-run:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(16,185,129,0.4); }
-  .btn-run:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 6px; }
-  .btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
-  .btn-danger:hover { background: rgba(239,68,68,0.25); }
-  .btn-success { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
-  .btn-success:hover { background: rgba(16,185,129,0.25); }
-  .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border); }
-  .btn-ghost:hover { background: rgba(255,255,255,0.1); color: var(--text); }
-  .error-msg { color: var(--red); font-size: 13px; margin-top: -12px; margin-bottom: 16px; display: none; }
+  #login-screen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--ink);}
+  .login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px 44px;width:400px;box-shadow:0 0 80px rgba(59,130,246,0.08);position:relative;overflow:hidden;}
+  .login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  .login-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+  .login-title{font-family:'Syne',sans-serif;font-weight:700;font-size:24px;color:var(--text);margin-bottom:8px;}
+  .login-sub{font-size:13px;color:var(--text-dim);margin-bottom:24px;}
+  .field-label{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;display:block;}
+  input[type="password"],input[type="text"],input[type="email"],select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;margin-bottom:16px;}
+  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow);}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:14px;letter-spacing:.3px;transition:all 0.2s;}
+  .btn-primary{background:var(--accent);color:#fff;width:100%;justify-content:center;}
+  .btn-primary:hover{background:#2563eb;transform:translateY(-1px);}
+  .btn-run{background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:14px 32px;font-size:15px;border-radius:10px;box-shadow:0 4px 20px rgba(16,185,129,0.3);}
+  .btn-run:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(16,185,129,0.4);}
+  .btn-run:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+  .btn-sm{padding:6px 14px;font-size:12px;border-radius:6px;}
+  .btn-danger{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.25);}
+  .btn-danger:hover{background:rgba(239,68,68,0.25);}
+  .btn-success{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.25);}
+  .btn-success:hover{background:rgba(16,185,129,0.25);}
+  .btn-ghost{background:rgba(255,255,255,0.05);color:var(--text-dim);border:1px solid var(--border);}
+  .btn-ghost:hover{background:rgba(255,255,255,0.1);color:var(--text);}
+  .btn-warning{background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.25);}
+  .btn-warning:hover{background:rgba(245,158,11,0.25);}
+  .error-msg{color:var(--red);font-size:13px;margin-bottom:12px;display:none;}
 
   /* APP */
-  #app { display: none; position: relative; z-index: 1; }
-  .topbar { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 32px; gap: 16px; background: rgba(17,24,39,0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50; }
-  .topbar-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 2px; color: var(--accent); }
-  .topbar-sep { width: 1px; height: 20px; background: var(--border); }
-  .topbar-title { font-size: 13px; color: var(--text-dim); font-weight: 400; }
-  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse-dot 2s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:.4; } }
-  .topbar-time { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-dim); }
-  .main-grid { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 60px); }
-  .sidebar { border-right: 1px solid var(--border); padding: 24px 0; background: rgba(22,31,46,0.5); }
-  .sidebar-section { padding: 0 16px; margin-bottom: 8px; }
-  .sidebar-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); padding: 0 12px; margin-bottom: 4px; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all 0.15s; color: var(--text-dim); font-size: 13px; }
-  .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-  .nav-item.active { background: var(--glow); color: var(--accent); border: 1px solid rgba(59,130,246,0.2); }
-  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
-  .content { padding: 32px; overflow-y: auto; }
-  .page { display: none; }
-  .page.active { display: block; }
-  .page-header { margin-bottom: 28px; }
-  .page-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; color: var(--text); margin-bottom: 4px; }
-  .page-sub { font-size: 13px; color: var(--text-dim); }
+  #app{display:none;position:relative;z-index:1;}
+  .topbar{height:60px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 32px;gap:16px;background:rgba(17,24,39,0.8);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50;}
+  .topbar-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;letter-spacing:2px;color:var(--accent);}
+  .topbar-sep{width:1px;height:20px;background:var(--border);}
+  .topbar-title{font-size:13px;color:var(--text-dim);}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse-dot 2s ease-in-out infinite;}
+  @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.4;}}
+  .topbar-time{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);}
+  .main-grid{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 60px);}
+  .sidebar{border-right:1px solid var(--border);padding:24px 0;background:rgba(22,31,46,0.5);}
+  .sidebar-section{padding:0 16px;margin-bottom:8px;}
+  .sidebar-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 12px;margin-bottom:4px;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all 0.15s;color:var(--text-dim);font-size:13px;}
+  .nav-item:hover{background:rgba(255,255,255,0.05);color:var(--text);}
+  .nav-item.active{background:var(--glow);color:var(--accent);border:1px solid rgba(59,130,246,0.2);}
+  .nav-icon{font-size:16px;width:20px;text-align:center;}
+  .content{padding:32px;overflow-y:auto;}
+  .page{display:none;}.page.active{display:block;}
+  .page-header{margin-bottom:28px;}
+  .page-title{font-family:'Syne',sans-serif;font-weight:700;font-size:22px;color:var(--text);margin-bottom:4px;}
+  .page-sub{font-size:13px;color:var(--text-dim);}
 
   /* CARDS */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
-  .card-top { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-  .card-info { display: flex; flex-direction: column; gap: 2px; }
-  .card-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 15px; color: var(--text); }
-  .card-url { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
-  .card-meta { padding: 12px 20px; display: flex; align-items: center; gap: 16px; background: rgba(0,0,0,0.2); }
-  .badge { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; }
-  .badge-yt { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
-  .badge-web { background: rgba(6,182,212,0.15); color: #67e8f9; border: 1px solid rgba(6,182,212,0.2); }
-  .badge-on { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
-  .badge-off { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.2); }
-  .badge-success { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
-  .badge-fail { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
-  .badge-running { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.2); }
-  .meta-item { font-size: 12px; color: var(--text-dim); }
-  .meta-key { color: var(--muted); font-size: 11px; }
-  .actions { display: flex; gap: 8px; }
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+  .card-top{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+  .card-name{font-family:'Syne',sans-serif;font-weight:600;font-size:15px;color:var(--text);}
+  .card-url{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:2px;word-break:break-all;}
+  .card-meta{padding:10px 20px;background:rgba(0,0,0,0.2);font-size:12px;color:var(--text-dim);}
+  .badge{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
+  .badge-yt{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
+  .badge-web{background:rgba(6,182,212,0.15);color:#67e8f9;border:1px solid rgba(6,182,212,0.2);}
+  .badge-on{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2);}
+  .badge-success{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2);}
+  .badge-fail{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
+  .badge-running{background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.2);}
+  .actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
 
-  /* FORM */
-  .form-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-  .form-panel h3 { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px; color: var(--text-dim); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-group { margin-bottom: 0; }
-  .form-group.full { grid-column: 1 / -1; }
-  select option { background: var(--surface); }
+  /* FORM PANEL */
+  .form-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px;position:relative;overflow:hidden;}
+  .form-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  .form-panel h3{font-family:'Syne',sans-serif;font-weight:600;font-size:14px;color:var(--text-dim);margin-bottom:20px;text-transform:uppercase;letter-spacing:1px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .form-group{margin-bottom:0;}
+  .form-group.full{grid-column:1/-1;}
+  select option{background:var(--surface);}
 
   /* STATS */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
-  .stat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
-  .stat-card.blue::after { background: linear-gradient(90deg, var(--accent), transparent); }
-  .stat-card.cyan::after { background: linear-gradient(90deg, var(--accent2), transparent); }
-  .stat-card.green::after { background: linear-gradient(90deg, var(--green), transparent); }
-  .stat-card.amber::after { background: linear-gradient(90deg, var(--amber), transparent); }
-  .stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .stat-value { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 32px; color: var(--text); }
-  .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;}
+  .stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+  .stat-card.blue::after{background:linear-gradient(90deg,var(--accent),transparent);}
+  .stat-card.cyan::after{background:linear-gradient(90deg,var(--accent2),transparent);}
+  .stat-card.green::after{background:linear-gradient(90deg,var(--green),transparent);}
+  .stat-card.amber::after{background:linear-gradient(90deg,var(--amber),transparent);}
+  .stat-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:var(--text);}
+  .stat-sub{font-size:11px;color:var(--text-dim);margin-top:4px;}
 
-  /* MANUAL RUN PANEL */
-  .run-panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 32px;
-    margin-bottom: 28px;
-    position: relative;
-    overflow: hidden;
-  }
-  .run-panel::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--green), var(--accent2));
-  }
-  .run-panel-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-  .run-panel-text h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 6px; }
-  .run-panel-text p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
-  .run-status { margin-top: 16px; padding: 12px 16px; border-radius: 8px; font-size: 13px; display: none; }
-  .run-status.running { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #fcd34d; display: flex; align-items: center; gap: 10px; }
-  .run-status.success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: #34d399; display: flex; align-items: center; gap: 10px; }
-  .run-status.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #f87171; display: flex; align-items: center; gap: 10px; }
-  .spinner { width: 16px; height: 16px; border: 2px solid rgba(245,158,11,0.3); border-top-color: #fcd34d; border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  /* RUN PANEL */
+  .run-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin-bottom:28px;position:relative;overflow:hidden;}
+  .run-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--accent2));}
+  .run-panel-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  .run-panel-text h3{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;}
+  .run-panel-text p{font-size:13px;color:var(--text-dim);line-height:1.6;}
+  .run-status{margin-top:16px;padding:12px 16px;border-radius:8px;font-size:13px;display:none;}
+  .run-status.running{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:#fcd34d;display:flex;align-items:center;gap:10px;}
+  .run-status.success{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#34d399;display:flex;align-items:center;gap:10px;}
+  .run-status.error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;display:flex;align-items:center;gap:10px;}
+  .spinner{width:16px;height:16px;border:2px solid rgba(245,158,11,0.3);border-top-color:#fcd34d;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;}
+  @keyframes spin{to{transform:rotate(360deg);}}
 
-  /* GITHUB TOKEN SETUP */
-  .token-panel { background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.15); border-radius: 12px; padding: 20px 24px; margin-bottom: 20px; }
-  .token-panel p { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.6; }
-  .token-input-row { display: flex; gap: 10px; align-items: center; }
-  .token-input-row input { flex: 1; margin-bottom: 0; font-size: 12px; }
+  /* TOKEN PANEL */
+  .token-panel{background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.15);border-radius:12px;padding:20px 24px;margin-bottom:20px;}
+  .token-panel p{font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;}
+  .token-input-row{display:flex;gap:10px;align-items:center;}
+  .token-input-row input{flex:1;margin-bottom:0;font-size:12px;}
+  .token-saved{font-size:12px;color:var(--green);margin-top:8px;display:none;}
+
+  /* SYNC STATUS */
+  .sync-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:8px;margin-bottom:20px;font-size:13px;color:var(--green);}
+  .sync-bar.syncing{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:#fcd34d;}
+  .sync-bar.error{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2);color:#f87171;}
 
   /* HISTORY */
-  .history-section { margin-top: 8px; }
-  .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .history-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
-  .history-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; transition: border-color 0.2s; }
-  .history-item:hover { border-color: rgba(59,130,246,0.3); }
-  .history-icon { font-size: 20px; flex-shrink: 0; }
-  .history-info { flex: 1; }
-  .history-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
-  .history-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
-  .history-duration { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-  .history-link { font-size: 11px; color: var(--accent); text-decoration: none; }
-  .history-link:hover { text-decoration: underline; }
-  .history-empty { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
-  .history-loading { text-align: center; padding: 40px; color: var(--text-dim); font-size: 13px; }
-
-  /* SETUP */
-  .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .setup-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
-  .setup-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 8px; color: var(--text); }
-  .setup-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 16px; }
-  .code-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: #7dd3fc; line-height: 1.8; overflow-x: auto; white-space: pre; }
+  .history-item{display:flex;align-items:center;gap:16px;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;transition:border-color 0.2s;}
+  .history-item:hover{border-color:rgba(59,130,246,0.3);}
+  .history-info{flex:1;}
+  .history-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;}
+  .history-time{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);}
+  .history-link{font-size:11px;color:var(--accent);text-decoration:none;}
+  .history-link:hover{text-decoration:underline;}
+  .history-empty{text-align:center;padding:40px;color:var(--text-dim);font-size:13px;}
 
   /* TOAST */
-  .toast-container { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 999; }
-  .toast { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; font-size: 13px; color: var(--text); display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); animation: slide-in 0.3s ease; min-width: 260px; }
-  @keyframes slide-in { from { transform: translateX(100%); opacity:0; } to { transform: translateX(0); opacity:1; } }
-  @keyframes slide-out { from { transform: translateX(0); opacity:1; } to { transform: translateX(120%); opacity:0; } }
-  .toast.success { border-left: 3px solid var(--green); }
-  .toast.error { border-left: 3px solid var(--red); }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .toast-container{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:999;}
+  .toast{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:13px;color:var(--text);display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:slide-in 0.3s ease;min-width:280px;}
+  @keyframes slide-in{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+  @keyframes slide-out{from{transform:translateX(0);opacity:1;}to{transform:translateX(120%);opacity:0;}}
+  .toast.success{border-left:3px solid var(--green);}
+  .toast.error{border-left:3px solid var(--red);}
+  .toast.info{border-left:3px solid var(--accent);}
+  ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 </style>
 </head>
 <body>
@@ -187,11 +157,13 @@
   <div class="login-box">
     <div class="login-logo">MIT Control Panel</div>
     <div class="login-title">Good morning, Akhil</div>
-    <div class="login-sub">Enter your access password to continue</div>
-    <div class="field-label">Password</div>
-    <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password">
+    <div class="login-sub">Password to unlock · GitHub token to edit sources live</div>
+    <label class="field-label">Dashboard Password</label>
+    <input type="password" id="pw-input" placeholder="••••••••">
+    <label class="field-label">GitHub Token <span style="color:var(--muted);font-size:10px;">(for live editing — optional)</span></label>
+    <input type="password" id="login-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
     <div class="error-msg" id="pw-error">Incorrect password. Try again.</div>
-    <button class="btn btn-primary" onclick="doLogin()"><span>🔓</span> Unlock Dashboard</button>
+    <button class="btn btn-primary" onclick="doLogin()">🔓 Unlock Dashboard</button>
   </div>
 </div>
 
@@ -202,6 +174,8 @@
     <div class="topbar-sep"></div>
     <div class="topbar-title">Morning Intelligence Tracker</div>
     <div class="topbar-right">
+      <div id="github-status" style="font-size:12px;color:var(--text-dim);">⚪ Not connected</div>
+      <div class="topbar-sep"></div>
       <div class="status-dot"></div>
       <div class="topbar-time" id="clock">--:--:--</div>
       <button class="btn btn-sm btn-ghost" onclick="doLogout()">Lock 🔒</button>
@@ -225,13 +199,9 @@
         <div class="nav-item" onclick="showPage('history',this)"><span class="nav-icon">📅</span> Run History</div>
       </div>
       <div class="sidebar-section" style="margin-top:8px;">
-        <div class="sidebar-label">Configuration</div>
+        <div class="sidebar-label">Live Configuration</div>
         <div class="nav-item" onclick="showPage('sources',this)"><span class="nav-icon">📡</span> Sources</div>
         <div class="nav-item" onclick="showPage('recipients',this)"><span class="nav-icon">📬</span> Recipients</div>
-      </div>
-      <div class="sidebar-section" style="margin-top:8px;">
-        <div class="sidebar-label">Setup</div>
-        <div class="nav-item" onclick="showPage('setup',this)"><span class="nav-icon">⚙️</span> GitHub Setup</div>
       </div>
     </div>
 
@@ -241,56 +211,35 @@
       <div class="page active" id="page-dashboard">
         <div class="page-header">
           <div class="page-title">Dashboard</div>
-          <div class="page-sub">System overview · <span id="last-update">--</span></div>
+          <div class="page-sub">Live system overview · <span id="last-update">--</span></div>
         </div>
         <div class="stats-grid">
-          <div class="stat-card blue"><div class="stat-label">Total Sources</div><div class="stat-value" id="stat-sources">2</div><div class="stat-sub">Active data feeds</div></div>
-          <div class="stat-card cyan"><div class="stat-label">Recipients</div><div class="stat-value" id="stat-recipients">2</div><div class="stat-sub">Subscribed emails</div></div>
-          <div class="stat-card green"><div class="stat-label">Last Run</div><div class="stat-value" id="stat-last-run">—</div><div class="stat-sub" id="stat-last-status">Fetching...</div></div>
+          <div class="stat-card blue"><div class="stat-label">Sources</div><div class="stat-value" id="stat-sources">—</div><div class="stat-sub">Active feeds</div></div>
+          <div class="stat-card cyan"><div class="stat-label">Recipients</div><div class="stat-value" id="stat-recipients">—</div><div class="stat-sub">Subscribed emails</div></div>
+          <div class="stat-card green"><div class="stat-label">Last Run</div><div class="stat-value" id="stat-last-run">—</div><div class="stat-sub" id="stat-last-status">Connect token</div></div>
           <div class="stat-card amber"><div class="stat-label">Next Run</div><div class="stat-value">7 AM</div><div class="stat-sub">IST daily auto</div></div>
         </div>
-
-        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">Active Feeds</div>
-        <div id="dash-sources-list"></div>
-
-        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin:24px 0 16px;">Digest Recipients</div>
-        <div id="dash-recipients-list"></div>
+        <div id="dash-content"><div style="color:var(--text-dim);font-size:13px;">Connect your GitHub token to load live data.</div></div>
       </div>
 
       <!-- MANUAL RUN -->
       <div class="page" id="page-run">
         <div class="page-header">
           <div class="page-title">Manual Run</div>
-          <div class="page-sub">Trigger the tracker instantly without waiting for 7 AM</div>
+          <div class="page-sub">Trigger the tracker instantly</div>
         </div>
-
-        <div class="token-panel">
-          <p>🔑 To trigger GitHub Actions from this dashboard, enter your <strong>GitHub Personal Access Token</strong> (PAT). It is stored only in your browser session — never sent anywhere except GitHub's API.</p>
-          <div class="token-input-row">
-            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="font-size:12px;">
-            <button class="btn btn-sm btn-success" onclick="saveToken()">Save Token</button>
-            <button class="btn btn-sm btn-ghost" onclick="clearToken()">Clear</button>
-          </div>
-          <div style="margin-top:10px;font-size:11px;color:var(--muted);">
-            Get one at: github.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token → check <strong>workflow</strong> scope
-          </div>
-        </div>
-
         <div class="run-panel">
           <div class="run-panel-inner">
             <div class="run-panel-text">
               <h3>🚀 Run Morning Intelligence Tracker</h3>
-              <p>Triggers your GitHub Actions workflow immediately. Scrapes all sources, generates AI summaries, and sends the digest email. Takes ~2 minutes to complete.</p>
+              <p>Triggers GitHub Actions immediately. Scrapes all sources, generates AI summaries, sends digest email. Takes ~2 minutes.</p>
             </div>
-            <button class="btn btn-run" id="run-btn" onclick="triggerRun()">
-              ▶ Run Now
-            </button>
+            <button class="btn btn-run" id="run-btn" onclick="triggerRun()">▶ Run Now</button>
           </div>
           <div class="run-status" id="run-status"></div>
         </div>
-
-        <div class="token-panel" style="background:rgba(245,158,11,0.05);border-color:rgba(245,158,11,0.2);">
-          <p style="margin-bottom:0;">📋 <strong>Repo configured:</strong> <span style="font-family:'DM Mono',monospace;color:var(--accent2);" id="repo-display">akhilguptakhandelwal-ops/morning-tracker1</span> &nbsp;·&nbsp; Workflow: <span style="font-family:'DM Mono',monospace;color:var(--accent2);">morning_tracker.yml</span></p>
+        <div style="font-size:12px;color:var(--muted);padding:12px 16px;background:rgba(0,0,0,0.2);border-radius:8px;">
+          Repo: <span style="font-family:'DM Mono',monospace;color:var(--accent2);">akhilguptakhandelwal-ops/morning-tracker1</span> · Workflow: <span style="font-family:'DM Mono',monospace;color:var(--accent2);">morning_tracker.yml</span>
         </div>
       </div>
 
@@ -300,100 +249,65 @@
           <div class="page-title">Run History</div>
           <div class="page-sub">Last 7 days of workflow executions</div>
         </div>
-
-        <div class="token-panel" id="history-token-warning" style="display:none;">
-          <p style="margin-bottom:0;">⚠️ Enter your GitHub token on the <strong>Manual Run</strong> page to load real run history.</p>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+          <button class="btn btn-sm btn-ghost" onclick="loadHistory()">↻ Refresh</button>
         </div>
-
-        <div class="history-section">
-          <div class="history-header">
-            <div class="history-title">Recent Runs</div>
-            <button class="btn btn-sm btn-ghost" onclick="loadHistory()">↻ Refresh</button>
-          </div>
-          <div id="history-list"><div class="history-loading">Loading run history...</div></div>
-        </div>
+        <div id="history-list"><div class="history-empty">Connect your GitHub token to see run history.</div></div>
       </div>
 
-      <!-- SOURCES -->
+      <!-- SOURCES — LIVE EDIT -->
       <div class="page" id="page-sources">
         <div class="page-header">
-          <div class="page-title">Content Sources</div>
-          <div class="page-sub">Add, remove, or toggle your intelligence feeds</div>
+          <div class="page-title">Sources</div>
+          <div class="page-sub">Changes save directly to <code style="font-family:'DM Mono',monospace;color:var(--accent2);">morning_tracker.py</code> on GitHub</div>
         </div>
+        <div id="sources-sync-bar" class="sync-bar" style="display:none;"></div>
+
         <div class="form-panel">
           <h3>➕ Add New Source</h3>
           <div class="form-row">
-            <div class="form-group"><div class="field-label">Source Name</div><input type="text" id="src-name" placeholder="e.g. CA Club India"></div>
-            <div class="form-group"><div class="field-label">Type</div><select id="src-type"><option value="youtube">YouTube</option><option value="website">Website</option></select></div>
-            <div class="form-group full"><div class="field-label">URL / Identifier</div><input type="text" id="src-url" placeholder="https://www.youtube.com/feeds/videos.xml?channel_id=..."></div>
+            <div class="form-group">
+              <label class="field-label">Source Name</label>
+              <input type="text" id="src-name" placeholder="e.g. TaxGuru">
+            </div>
+            <div class="form-group">
+              <label class="field-label">Type</label>
+              <select id="src-type">
+                <option value="youtube">YouTube</option>
+                <option value="website">Website</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label class="field-label">URL</label>
+              <input type="text" id="src-url" placeholder="https://taxguru.in  or  youtube.com/feeds/videos.xml?channel_id=...">
+            </div>
           </div>
-          <button class="btn btn-success" onclick="addSource()">Add Source</button>
+          <button class="btn btn-success" onclick="addSourceLive()">➕ Add &amp; Save to GitHub</button>
         </div>
-        <div id="sources-list"></div>
+
+        <div id="sources-list"><div style="color:var(--text-dim);font-size:13px;padding:20px;">Loading sources from GitHub...</div></div>
       </div>
 
-      <!-- RECIPIENTS -->
+      <!-- RECIPIENTS — LIVE EDIT -->
       <div class="page" id="page-recipients">
         <div class="page-header">
-          <div class="page-title">Email Recipients</div>
-          <div class="page-sub">Manage who receives the morning digest</div>
+          <div class="page-title">Recipients</div>
+          <div class="page-sub">Changes save directly to <code style="font-family:'DM Mono',monospace;color:var(--accent2);">morning_tracker.py</code> on GitHub</div>
         </div>
+        <div id="recipients-sync-bar" class="sync-bar" style="display:none;"></div>
+
         <div class="form-panel">
           <h3>➕ Add Recipient</h3>
           <div style="display:flex;gap:12px;align-items:flex-end;">
-            <div style="flex:1"><div class="field-label">Email Address</div><input type="email" id="rec-email" placeholder="colleague@company.com" style="margin-bottom:0"></div>
-            <button class="btn btn-success" onclick="addRecipient()" style="margin-bottom:0;white-space:nowrap;">Add Recipient</button>
+            <div style="flex:1;">
+              <label class="field-label">Email Address</label>
+              <input type="email" id="rec-email" placeholder="colleague@company.com" style="margin-bottom:0;">
+            </div>
+            <button class="btn btn-success" onclick="addRecipientLive()" style="white-space:nowrap;">➕ Add &amp; Save to GitHub</button>
           </div>
         </div>
-        <div id="recipients-list"></div>
-      </div>
 
-      <!-- SETUP -->
-      <div class="page" id="page-setup">
-        <div class="page-header">
-          <div class="page-title">GitHub Setup Guide</div>
-          <div class="page-sub">How to get your Personal Access Token for Manual Run</div>
-        </div>
-        <div class="setup-grid">
-          <div class="setup-card">
-            <h3>Step 1 — Generate Token</h3>
-            <p>Go to GitHub and create a Personal Access Token with workflow permissions.</p>
-            <div class="code-block">github.com
-→ Profile (top right) → Settings
-→ Developer settings (bottom left)
-→ Personal access tokens
-→ Tokens (classic)
-→ Generate new token (classic)</div>
-          </div>
-          <div class="setup-card">
-            <h3>Step 2 — Select Scope</h3>
-            <p>Only one permission is needed to trigger workflows.</p>
-            <div class="code-block">Note: "MIT Dashboard token"
-Expiration: 90 days
-
-☑ workflow  ← check this only
-
-Click: Generate token
-Copy the ghp_xxxx... token</div>
-          </div>
-          <div class="setup-card">
-            <h3>Step 3 — Paste in Dashboard</h3>
-            <p>Go to Manual Run page and paste the token. It stays in your browser only.</p>
-            <div class="code-block">Dashboard → Manual Run
-→ Paste token in the box
-→ Click Save Token
-→ Click ▶ Run Now</div>
-          </div>
-          <div class="setup-card">
-            <h3>Step 4 — Check History</h3>
-            <p>After running, check the Run History page to see status, time, and duration.</p>
-            <div class="code-block">Dashboard → Run History
-→ See last 7 days of runs
-→ Green = success + email sent
-→ Red = something failed
-→ Click run name to see logs</div>
-          </div>
-        </div>
+        <div id="recipients-list"><div style="color:var(--text-dim);font-size:13px;padding:20px;">Loading recipients from GitHub...</div></div>
       </div>
 
     </div>
@@ -403,14 +317,18 @@ Copy the ghp_xxxx... token</div>
 <div class="toast-container" id="toasts"></div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────
-const GITHUB_OWNER = 'akhilguptakhandelwal-ops';
-const GITHUB_REPO  = 'morning-tracker1';
-const WORKFLOW_FILE = 'morning_tracker.yml';
+// ══════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════
+const OWNER   = 'akhilguptakhandelwal-ops';
+const REPO    = 'morning-tracker1';
+const FILE    = 'morning_tracker.py';
+const WORKFLOW = 'morning_tracker.yml';
+const PASS_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // "password"
 
-// ── AUTH ──────────────────────────────────────────────
-const PASS_HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // "password"
-
+// ══════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════
 async function sha256(msg) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -419,293 +337,449 @@ async function sha256(msg) {
 async function doLogin() {
   const pw = document.getElementById('pw-input').value;
   const hash = await sha256(pw);
-  if (hash === PASS_HASH) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    sessionStorage.setItem('mit_auth', '1');
-    startClock();
-    renderDashboard();
-    loadHistory();
-  } else {
+  if (hash !== PASS_HASH) {
     const err = document.getElementById('pw-error');
     err.style.display = 'block';
-    document.getElementById('pw-input').style.borderColor = 'var(--red)';
-    setTimeout(() => { err.style.display='none'; document.getElementById('pw-input').style.borderColor='var(--border)'; }, 3000);
+    setTimeout(()=>err.style.display='none', 3000);
+    return;
   }
+  const token = document.getElementById('login-token').value.trim();
+  if (token) sessionStorage.setItem('gh_token', token);
+  sessionStorage.setItem('mit_auth','1');
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  init();
 }
 
 function doLogout() {
-  sessionStorage.removeItem('mit_auth');
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('pw-input').value = '';
+  sessionStorage.clear();
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('pw-input').value='';
+  document.getElementById('login-token').value='';
 }
 
-document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
 if (sessionStorage.getItem('mit_auth')) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  startClock(); renderDashboard(); loadHistory();
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  init();
 }
 
-// ── CLOCK ─────────────────────────────────────────────
-function startClock() {
-  const tick = () => document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  tick(); setInterval(tick, 1000);
-  document.getElementById('last-update').textContent = 'Updated ' + new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+// ══════════════════════════════════════════════════
+// GITHUB API HELPERS
+// ══════════════════════════════════════════════════
+function getToken() { return sessionStorage.getItem('gh_token')||''; }
+
+async function ghFetch(path, opts={}) {
+  const token = getToken();
+  const headers = { 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return fetch(`https://api.github.com/repos/${OWNER}/${REPO}/${path}`, { ...opts, headers: {...headers, ...(opts.headers||{})} });
 }
 
-// ── NAVIGATION ────────────────────────────────────────
-function showPage(page, el) {
+// Fetch morning_tracker.py content + SHA from GitHub
+async function fetchTrackerFile() {
+  const resp = await ghFetch(`contents/${FILE}`);
+  if (!resp.ok) throw new Error(`GitHub API ${resp.status}`);
+  const data = await resp.json();
+  const content = atob(data.content.replace(/\n/g,''));
+  return { content, sha: data.sha };
+}
+
+// Push updated content back to GitHub
+async function pushTrackerFile(newContent, sha, message) {
+  const encoded = btoa(unescape(encodeURIComponent(newContent)));
+  const resp = await ghFetch(`contents/${FILE}`, {
+    method: 'PUT',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({ message, content: encoded, sha })
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(()=>({}));
+    throw new Error(err.message || `GitHub API ${resp.status}`);
+  }
+  return resp.json();
+}
+
+// ══════════════════════════════════════════════════
+// PARSE sources_seed from Python file
+// ══════════════════════════════════════════════════
+function parseSources(content) {
+  const sources = [];
+  // Match lines like: ("youtube", "Name", "url"),
+  const re = /\(\s*"(youtube|website)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)/g;
+  let m;
+  // Only parse within sources_seed block
+  const block = content.match(/sources_seed\s*=\s*\[([\s\S]*?)\]/);
+  if (!block) return sources;
+  while ((m = re.exec(block[1])) !== null) {
+    sources.push({ type: m[1], name: m[2], url: m[3] });
+  }
+  return sources;
+}
+
+// Parse recipients from Python file
+function parseRecipients(content) {
+  const recipients = [];
+  const block = content.match(/for email in \(([\s\S]*?)\):/);
+  if (!block) return recipients;
+  const re = /"([^"]+@[^"]+)"/g;
+  let m;
+  while ((m = re.exec(block[1])) !== null) {
+    recipients.push(m[1]);
+  }
+  return recipients;
+}
+
+// Rebuild sources_seed block in Python content
+function rebuildSources(content, sources) {
+  const lines = sources.map(s =>
+    `            ("${s.type}", "${s.name}",\n             "${s.url}"),`
+  ).join('\n');
+  const newBlock = `sources_seed = [\n${lines}\n        ]`;
+  return content.replace(/sources_seed\s*=\s*\[[\s\S]*?\]/, newBlock);
+}
+
+// Rebuild recipients block in Python content
+function rebuildRecipients(content, recipients) {
+  const emails = recipients.map(e => `"${e}"`).join(', ');
+  return content.replace(
+    /for email in \([\s\S]*?\):/,
+    `for email in (${emails}):`
+  );
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+async function init() {
+  startClock();
+  updateGithubStatus();
+  await loadFromGitHub();
+  loadHistory();
+}
+
+function updateGithubStatus() {
+  const token = getToken();
+  const el = document.getElementById('github-status');
+  if (token) {
+    el.innerHTML = '🟢 GitHub Connected';
+    el.style.color = 'var(--green)';
+  } else {
+    el.innerHTML = '⚪ No Token — Read Only';
+    el.style.color = 'var(--text-dim)';
+  }
+}
+
+// ══════════════════════════════════════════════════
+// LOAD DATA FROM GITHUB
+// ══════════════════════════════════════════════════
+let cachedContent = '';
+let cachedSha = '';
+let cachedSources = [];
+let cachedRecipients = [];
+
+async function loadFromGitHub() {
+  try {
+    const { content, sha } = await fetchTrackerFile();
+    cachedContent = content;
+    cachedSha = sha;
+    cachedSources = parseSources(content);
+    cachedRecipients = parseRecipients(content);
+    renderDashboard();
+    renderSources();
+    renderRecipients();
+    toast('Loaded live data from GitHub ✅', 'success');
+  } catch(e) {
+    toast('Could not load from GitHub: ' + e.message, 'error');
+    // show defaults
+    cachedSources = [
+      {type:'youtube',name:'Fintex Pro',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ'},
+      {type:'website',name:'Income Tax India',url:'https://incometaxindia.gov.in'},
+    ];
+    cachedRecipients = ['gupta_akhil@ymail.com','akhilgupta.khandelwal@gmail.com'];
+    renderDashboard(); renderSources(); renderRecipients();
+  }
+}
+
+// ══════════════════════════════════════════════════
+// RENDER DASHBOARD
+// ══════════════════════════════════════════════════
+function renderDashboard() {
+  document.getElementById('stat-sources').textContent = cachedSources.length;
+  document.getElementById('stat-recipients').textContent = cachedRecipients.length;
+  document.getElementById('last-update').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+  const srcHtml = cachedSources.map(s=>`
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-top">
+        <div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div>
+        <div class="actions">
+          <span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span>
+          <span class="badge badge-on">Active</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  const recHtml = cachedRecipients.map(e=>`
+    <div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+      <span style="font-size:18px;">📧</span>
+      <span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${e}</span>
+      <span class="badge badge-on">Subscribed</span>
+    </div>`).join('');
+
+  document.getElementById('dash-content').innerHTML = `
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Active Feeds</div>
+    ${srcHtml}
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px;">Recipients</div>
+    ${recHtml}`;
+}
+
+// ══════════════════════════════════════════════════
+// SOURCES — LIVE EDIT
+// ══════════════════════════════════════════════════
+function renderSources() {
+  const el = document.getElementById('sources-list');
+  if (!cachedSources.length) { el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No sources found.</div>'; return; }
+  el.innerHTML = cachedSources.map((s,i)=>`
+    <div class="card">
+      <div class="card-top">
+        <div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div>
+        <div class="actions">
+          <span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span>
+          <span class="badge badge-on">Active</span>
+          <button class="btn btn-sm btn-danger" onclick="removeSourceLive(${i})">🗑 Remove</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function addSourceLive() {
+  if (!getToken()) { toast('GitHub token required to edit sources.','error'); return; }
+  const name = document.getElementById('src-name').value.trim();
+  const type = document.getElementById('src-type').value;
+  const url  = document.getElementById('src-url').value.trim();
+  if (!name||!url) { toast('Name and URL are required.','error'); return; }
+  if (cachedSources.find(s=>s.url===url)) { toast('This URL already exists.','error'); return; }
+
+  showSyncBar('sources','syncing','⏳ Saving to GitHub...');
+  try {
+    const { content, sha } = await fetchTrackerFile();
+    cachedSources.push({type,name,url});
+    const newContent = rebuildSources(content, cachedSources);
+    await pushTrackerFile(newContent, sha, `Dashboard: add source "${name}"`);
+    cachedContent = newContent; cachedSha = sha;
+    ['src-name','src-url'].forEach(id=>document.getElementById(id).value='');
+    renderSources(); renderDashboard();
+    showSyncBar('sources','success','✅ Saved to GitHub! Will take effect on next run.');
+    toast(`Source "${name}" added and saved to GitHub ✅`,'success');
+  } catch(e) {
+    cachedSources.pop();
+    showSyncBar('sources','error','❌ Save failed: '+e.message);
+    toast('Save failed: '+e.message,'error');
+  }
+}
+
+async function removeSourceLive(index) {
+  if (!getToken()) { toast('GitHub token required.','error'); return; }
+  const s = cachedSources[index];
+  if (!confirm(`Remove "${s.name}"?`)) return;
+
+  showSyncBar('sources','syncing','⏳ Removing from GitHub...');
+  try {
+    const { content, sha } = await fetchTrackerFile();
+    cachedSources.splice(index,1);
+    const newContent = rebuildSources(content, cachedSources);
+    await pushTrackerFile(newContent, sha, `Dashboard: remove source "${s.name}"`);
+    renderSources(); renderDashboard();
+    showSyncBar('sources','success',`✅ "${s.name}" removed from GitHub.`);
+    toast(`"${s.name}" removed ✅`,'success');
+  } catch(e) {
+    cachedSources.splice(index,0,s);
+    showSyncBar('sources','error','❌ Remove failed: '+e.message);
+    toast('Remove failed: '+e.message,'error');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// RECIPIENTS — LIVE EDIT
+// ══════════════════════════════════════════════════
+function renderRecipients() {
+  const el = document.getElementById('recipients-list');
+  if (!cachedRecipients.length) { el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No recipients found.</div>'; return; }
+  el.innerHTML = cachedRecipients.map((e,i)=>`
+    <div class="card" style="padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:8px;">
+      <span style="font-size:20px;">📧</span>
+      <span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${e}</span>
+      <span class="badge badge-on">Subscribed</span>
+      <button class="btn btn-sm btn-danger" onclick="removeRecipientLive(${i})">🗑 Remove</button>
+    </div>`).join('');
+}
+
+async function addRecipientLive() {
+  if (!getToken()) { toast('GitHub token required to edit recipients.','error'); return; }
+  const email = document.getElementById('rec-email').value.trim();
+  if (!email||!email.includes('@')) { toast('Enter a valid email.','error'); return; }
+  if (cachedRecipients.includes(email)) { toast('Already subscribed.','error'); return; }
+
+  showSyncBar('recipients','syncing','⏳ Saving to GitHub...');
+  try {
+    const { content, sha } = await fetchTrackerFile();
+    cachedRecipients.push(email);
+    const newContent = rebuildRecipients(content, cachedRecipients);
+    await pushTrackerFile(newContent, sha, `Dashboard: add recipient "${email}"`);
+    document.getElementById('rec-email').value='';
+    renderRecipients(); renderDashboard();
+    showSyncBar('recipients','success','✅ Saved to GitHub!');
+    toast(`${email} added and saved to GitHub ✅`,'success');
+  } catch(e) {
+    cachedRecipients.pop();
+    showSyncBar('recipients','error','❌ Save failed: '+e.message);
+    toast('Save failed: '+e.message,'error');
+  }
+}
+
+async function removeRecipientLive(index) {
+  if (!getToken()) { toast('GitHub token required.','error'); return; }
+  const email = cachedRecipients[index];
+  if (!confirm(`Remove ${email}?`)) return;
+
+  showSyncBar('recipients','syncing','⏳ Removing from GitHub...');
+  try {
+    const { content, sha } = await fetchTrackerFile();
+    cachedRecipients.splice(index,1);
+    const newContent = rebuildRecipients(content, cachedRecipients);
+    await pushTrackerFile(newContent, sha, `Dashboard: remove recipient "${email}"`);
+    renderRecipients(); renderDashboard();
+    showSyncBar('recipients','success',`✅ ${email} removed from GitHub.`);
+    toast(`${email} removed ✅`,'success');
+  } catch(e) {
+    cachedRecipients.splice(index,0,email);
+    showSyncBar('recipients','error','❌ Remove failed: '+e.message);
+    toast('Remove failed: '+e.message,'error');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// SYNC BAR
+// ══════════════════════════════════════════════════
+function showSyncBar(page, type, msg) {
+  const el = document.getElementById(`${page}-sync-bar`);
+  el.className = `sync-bar ${type==='syncing'?'syncing':type==='error'?'error':''}`;
+  el.style.display = 'flex';
+  el.textContent = msg;
+  if (type !== 'syncing') setTimeout(()=>el.style.display='none', 4000);
+}
+
+// ══════════════════════════════════════════════════
+// MANUAL RUN
+// ══════════════════════════════════════════════════
+async function triggerRun() {
+  const token = getToken();
+  if (!token) { toast('GitHub token required to trigger runs.','error'); return; }
+  const btn = document.getElementById('run-btn');
+  const status = document.getElementById('run-status');
+  btn.disabled=true; btn.innerHTML='⏳ Triggering...';
+  status.className='run-status running';
+  status.innerHTML='<div class="spinner"></div> Sending trigger to GitHub Actions...';
+
+  try {
+    const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,{
+      method:'POST',
+      headers:{'Authorization':`Bearer ${token}`,'Accept':'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'},
+      body:JSON.stringify({ref:'main'})
+    });
+    if (resp.status===204) {
+      status.className='run-status success';
+      status.innerHTML='✅ Triggered! GitHub Actions is running now. Check Run History in ~2 minutes. Email will arrive shortly after.';
+      toast('Tracker triggered ✅','success');
+      setTimeout(()=>loadHistory(), 10000);
+    } else {
+      const err = await resp.json().catch(()=>({}));
+      throw new Error(err.message||`HTTP ${resp.status}`);
+    }
+  } catch(e) {
+    status.className='run-status error';
+    status.innerHTML=`❌ ${e.message}`;
+    toast('Trigger failed: '+e.message,'error');
+  }
+  btn.disabled=false; btn.innerHTML='▶ Run Now';
+}
+
+// ══════════════════════════════════════════════════
+// RUN HISTORY
+// ══════════════════════════════════════════════════
+async function loadHistory() {
+  const list = document.getElementById('history-list');
+  const token = getToken();
+  if (!token) { list.innerHTML='<div class="history-empty">Connect your GitHub token to see run history.</div>'; return; }
+  list.innerHTML='<div class="history-empty">⏳ Loading...</div>';
+  try {
+    const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/runs?per_page=10`,{
+      headers:{'Authorization':`Bearer ${token}`,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}
+    });
+    if (!resp.ok) throw new Error(`API ${resp.status}`);
+    const data = await resp.json();
+    const sevenAgo = new Date(Date.now()-7*24*60*60*1000);
+    const runs = (data.workflow_runs||[]).filter(r=>new Date(r.created_at)>sevenAgo);
+
+    if (runs[0]) {
+      const d = new Date(runs[0].created_at);
+      document.getElementById('stat-last-run').textContent = d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+      document.getElementById('stat-last-status').textContent = runs[0].conclusion==='success'?'✅ Success':runs[0].conclusion==='failure'?'❌ Failed':'⏳ Running';
+    }
+
+    if (!runs.length) { list.innerHTML='<div class="history-empty">No runs in last 7 days.</div>'; return; }
+
+    list.innerHTML = runs.map(r=>{
+      const start = new Date(r.created_at);
+      const end = r.updated_at ? new Date(r.updated_at) : null;
+      const dur = end&&r.conclusion ? Math.round((end-start)/1000)+'s' : '—';
+      const con = r.conclusion||r.status;
+      const icon = con==='success'?'✅':con==='failure'?'❌':con==='in_progress'?'⏳':'⚪';
+      const bc = con==='success'?'badge-success':con==='failure'?'badge-fail':'badge-running';
+      const bl = con==='success'?'Success':con==='failure'?'Failed':con==='in_progress'?'Running':'Queued';
+      const trig = r.event==='schedule'?'🕐 Scheduled':r.event==='workflow_dispatch'?'👆 Manual':'⚡ Push';
+      return `<div class="history-item">
+        <div style="font-size:20px;flex-shrink:0;">${icon}</div>
+        <div class="history-info">
+          <div class="history-name">${start.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'})} · ${start.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST</div>
+          <div class="history-time">${trig} · Duration: ${dur}</div>
+        </div>
+        <span class="badge ${bc}">${bl}</span>
+        <a href="${r.html_url}" target="_blank" class="history-link">Logs →</a>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML=`<div class="history-empty">❌ ${e.message}</div>`;
+  }
+}
+
+// ══════════════════════════════════════════════════
+// NAVIGATION + CLOCK
+// ══════════════════════════════════════════════════
+function showPage(page,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
   el.classList.add('active');
-  if (page==='sources') renderSources();
-  if (page==='recipients') renderRecipients();
-  if (page==='history') loadHistory();
+  if(page==='history') loadHistory();
 }
 
-// ── DATA ──────────────────────────────────────────────
-let sources = [
-  {id:1,type:'youtube',name:'Fintex Pro',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ',active:true},
-  {id:2,type:'website',name:'Income Tax India',url:'https://incometaxindia.gov.in',active:true},
-];
-let recipients = [
-  {id:1,email:'gupta_akhil@ymail.com'},
-  {id:2,email:'akhilgupta.khandelwal@gmail.com'},
-];
-let nextSrcId=3, nextRecId=3;
-
-// ── DASHBOARD ─────────────────────────────────────────
-function renderDashboard() {
-  document.getElementById('stat-sources').textContent = sources.filter(s=>s.active).length;
-  document.getElementById('stat-recipients').textContent = recipients.length;
-
-  document.getElementById('dash-sources-list').innerHTML = sources.map(s=>`
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-top">
-        <div class="card-info">
-          <div class="card-name">${s.name}</div>
-          <div class="card-url">${s.url}</div>
-        </div>
-        <div class="actions">
-          <span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span>
-          <span class="badge ${s.active?'badge-on':'badge-off'}">${s.active?'Active':'Paused'}</span>
-        </div>
-      </div>
-    </div>`).join('');
-
-  document.getElementById('dash-recipients-list').innerHTML = recipients.map(r=>`
-    <div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-      <span style="font-size:18px;">📧</span>
-      <span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${r.email}</span>
-      <span class="badge badge-on">Subscribed</span>
-    </div>`).join('');
+function startClock(){
+  const tick=()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  tick(); setInterval(tick,1000);
 }
 
-// ── GITHUB TOKEN ──────────────────────────────────────
-function getToken() { return sessionStorage.getItem('gh_token') || ''; }
-
-function saveToken() {
-  const t = document.getElementById('gh-token').value.trim();
-  if (!t.startsWith('ghp_') && !t.startsWith('github_pat_')) { toast('Token should start with ghp_ or github_pat_', 'error'); return; }
-  sessionStorage.setItem('gh_token', t);
-  document.getElementById('gh-token').value = '••••••••••••••••••••';
-  toast('Token saved ✅ — ready to trigger runs', 'success');
+function toast(msg,type='success'){
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.innerHTML=`<span>${type==='success'?'✅':type==='info'?'ℹ️':'❌'}</span><span>${msg}</span>`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>{el.style.animation='slide-out 0.3s ease forwards';setTimeout(()=>el.remove(),300);},4000);
 }
-
-function clearToken() {
-  sessionStorage.removeItem('gh_token');
-  document.getElementById('gh-token').value = '';
-  toast('Token cleared.', 'success');
-}
-
-// ── MANUAL RUN ────────────────────────────────────────
-async function triggerRun() {
-  const token = getToken();
-  if (!token) { toast('Please enter your GitHub token first.', 'error'); return; }
-
-  const btn = document.getElementById('run-btn');
-  const status = document.getElementById('run-status');
-
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Triggering...';
-  status.className = 'run-status running';
-  status.innerHTML = '<div class="spinner"></div> Sending trigger to GitHub Actions...';
-
-  try {
-    const resp = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${WORKFLOW_FILE}/dispatches`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github+json',
-        'Content-Type': 'application/json',
-        'X-GitHub-Api-Version': '2022-11-28'
-      },
-      body: JSON.stringify({ ref: 'main' })
-    });
-
-    if (resp.status === 204) {
-      status.className = 'run-status success';
-      status.innerHTML = '✅ Workflow triggered! GitHub Actions is now running. Check Run History in ~2 minutes for results. Your email will arrive shortly after.';
-      toast('Tracker triggered successfully! ✅', 'success');
-      setTimeout(() => loadHistory(), 8000);
-    } else {
-      const err = await resp.json().catch(()=>({}));
-      throw new Error(err.message || `HTTP ${resp.status}`);
-    }
-  } catch(e) {
-    status.className = 'run-status error';
-    status.innerHTML = `❌ Error: ${e.message}. Check your token has "workflow" scope.`;
-    toast('Trigger failed: ' + e.message, 'error');
-  }
-
-  btn.disabled = false;
-  btn.innerHTML = '▶ Run Now';
-}
-
-// ── RUN HISTORY ───────────────────────────────────────
-async function loadHistory() {
-  const list = document.getElementById('history-list');
-  const warning = document.getElementById('history-token-warning');
-  const token = getToken();
-
-  if (!token) {
-    warning && (warning.style.display = 'block');
-    list.innerHTML = '<div class="history-empty">🔑 Enter your GitHub token on the Manual Run page to see real run history.</div>';
-    // Show dummy history as preview
-    renderDummyHistory();
-    return;
-  }
-  warning && (warning.style.display = 'none');
-  list.innerHTML = '<div class="history-loading">⏳ Fetching run history from GitHub...</div>';
-
-  try {
-    const resp = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${WORKFLOW_FILE}/runs?per_page=10`,
-      { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' } }
-    );
-    if (!resp.ok) throw new Error(`GitHub API error: ${resp.status}`);
-    const data = await resp.json();
-    const runs = data.workflow_runs || [];
-
-    // Filter last 7 days
-    const sevenDaysAgo = new Date(Date.now() - 7*24*60*60*1000);
-    const recent = runs.filter(r => new Date(r.created_at) > sevenDaysAgo);
-
-    // Update dashboard stat
-    const lastRun = runs[0];
-    if (lastRun) {
-      const d = new Date(lastRun.created_at);
-      document.getElementById('stat-last-run').textContent = d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
-      document.getElementById('stat-last-status').textContent = lastRun.conclusion === 'success' ? '✅ Success' : lastRun.conclusion === 'failure' ? '❌ Failed' : '⏳ Running';
-    }
-
-    if (!recent.length) {
-      list.innerHTML = '<div class="history-empty">No runs in the last 7 days. Use Manual Run to trigger one.</div>';
-      return;
-    }
-
-    list.innerHTML = recent.map(run => {
-      const start = new Date(run.created_at);
-      const end = run.updated_at ? new Date(run.updated_at) : null;
-      const durationMs = end && run.conclusion ? end - start : null;
-      const duration = durationMs ? `${Math.round(durationMs/1000)}s` : '—';
-      const conclusion = run.conclusion || run.status;
-
-      const icon = conclusion==='success'?'✅': conclusion==='failure'?'❌': conclusion==='in_progress'?'⏳':'⚪';
-      const badgeClass = conclusion==='success'?'badge-success': conclusion==='failure'?'badge-fail': 'badge-running';
-      const badgeLabel = conclusion==='success'?'Success': conclusion==='failure'?'Failed': conclusion==='in_progress'?'Running':'Queued';
-
-      const trigger = run.event==='schedule'?'🕐 Scheduled': run.event==='workflow_dispatch'?'👆 Manual':'⚡ Push';
-
-      return `<div class="history-item">
-        <div class="history-icon">${icon}</div>
-        <div class="history-info">
-          <div class="history-name">${start.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short',year:'numeric'})} · ${start.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST</div>
-          <div class="history-time">${trigger} &nbsp;·&nbsp; Duration: ${duration}</div>
-        </div>
-        <span class="badge ${badgeClass}">${badgeLabel}</span>
-        <a href="${run.html_url}" target="_blank" class="history-link">View Logs →</a>
-      </div>`;
-    }).join('');
-
-  } catch(e) {
-    list.innerHTML = `<div class="history-empty">❌ Could not fetch history: ${e.message}</div>`;
-  }
-}
-
-function renderDummyHistory() {
-  // show placeholder cards when no token
-  const list = document.getElementById('history-list');
-  const items = [
-    {icon:'✅', badge:'badge-success', label:'Success', day:'Today', time:'07:00 AM IST', trigger:'🕐 Scheduled', duration:'98s'},
-    {icon:'✅', badge:'badge-success', label:'Success', day:'Yesterday', time:'07:00 AM IST', trigger:'🕐 Scheduled', duration:'112s'},
-    {icon:'✅', badge:'badge-success', label:'Success', day:'2 days ago', time:'07:00 AM IST', trigger:'🕐 Scheduled', duration:'94s'},
-  ];
-  list.innerHTML = '<div style="font-size:11px;color:var(--muted);margin-bottom:12px;padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:6px;display:inline-block;">Preview only — connect token for live data</div>' +
-    items.map(r=>`<div class="history-item" style="opacity:0.5;">
-      <div class="history-icon">${r.icon}</div>
-      <div class="history-info">
-        <div class="history-name">${r.day} · ${r.time}</div>
-        <div class="history-time">${r.trigger} &nbsp;·&nbsp; Duration: ${r.duration}</div>
-      </div>
-      <span class="badge ${r.badge}">${r.label}</span>
-    </div>`).join('');
-}
-
-// ── SOURCES ───────────────────────────────────────────
-function renderSources() {
-  const el = document.getElementById('sources-list');
-  el.innerHTML = sources.map(s=>`
-    <div class="card">
-      <div class="card-top">
-        <div class="card-info"><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div>
-        <div class="actions">
-          <span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span>
-          <span class="badge ${s.active?'badge-on':'badge-off'}">${s.active?'Active':'Paused'}</span>
-          <button class="btn btn-sm btn-ghost" onclick="toggleSource(${s.id})">${s.active?'Pause':'Enable'}</button>
-          <button class="btn btn-sm btn-danger" onclick="removeSource(${s.id})">Remove</button>
-        </div>
-      </div>
-    </div>`).join('');
-  updateStats();
-}
-
-function addSource() {
-  const name=document.getElementById('src-name').value.trim(), type=document.getElementById('src-type').value, url=document.getElementById('src-url').value.trim();
-  if(!name||!url){toast('Name and URL required.','error');return;}
-  if(sources.find(s=>s.url===url)){toast('URL already exists.','error');return;}
-  sources.push({id:nextSrcId++,type,name,url,active:true});
-  ['src-name','src-url'].forEach(id=>document.getElementById(id).value='');
-  renderSources(); renderDashboard();
-  toast(`Source "${name}" added ✅`,'success');
-}
-
-function removeSource(id){sources=sources.filter(s=>s.id!==id);renderSources();renderDashboard();toast('Source removed.','success');}
-function toggleSource(id){const s=sources.find(s=>s.id===id);if(s){s.active=!s.active;renderSources();renderDashboard();toast(`Source ${s.active?'enabled':'paused'}.`,'success');}}
-
-// ── RECIPIENTS ────────────────────────────────────────
-function renderRecipients() {
-  document.getElementById('recipients-list').innerHTML = recipients.map(r=>`
-    <div class="card" style="padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:10px;">
-      <span style="font-size:20px;">📧</span>
-      <span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${r.email}</span>
-      <span class="badge badge-on">Subscribed</span>
-      <button class="btn btn-sm btn-danger" onclick="removeRecipient(${r.id})">Remove</button>
-    </div>`).join('');
-  updateStats();
-}
-
-function addRecipient(){const email=document.getElementById('rec-email').value.trim();if(!email||!email.includes('@')){toast('Valid email required.','error');return;}if(recipients.find(r=>r.email===email)){toast('Already subscribed.','error');return;}recipients.push({id:nextRecId++,email});document.getElementById('rec-email').value='';renderRecipients();renderDashboard();toast(`${email} subscribed ✅`,'success');}
-function removeRecipient(id){const r=recipients.find(r=>r.id===id);recipients=recipients.filter(r=>r.id!==id);renderRecipients();renderDashboard();toast(`${r.email} removed.`,'success');}
-
-function updateStats(){document.getElementById('stat-sources').textContent=sources.filter(s=>s.active).length;document.getElementById('stat-recipients').textContent=recipients.length;}
-
-// ── TOAST ─────────────────────────────────────────────
-function toast(msg,type='success'){const el=document.createElement('div');el.className=`toast ${type}`;el.innerHTML=`<span>${type==='success'?'✅':'❌'}</span><span>${msg}</span>`;document.getElementById('toasts').appendChild(el);setTimeout(()=>{el.style.animation='slide-out 0.3s ease forwards';setTimeout(()=>el.remove(),300);},3500);}
 </script>
 </body>
 </html>
