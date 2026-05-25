@@ -156,6 +156,40 @@ def _get(url, timeout=20):
         return None
 
 
+def get_youtube_fallback_text(entry, url, title):
+    description = ""
+
+    for tag_name in ("media:description", "description", "summary"):
+        tag = entry.find(tag_name)
+        if tag and tag.text:
+            description = tag.text.strip()
+            if description:
+                break
+
+    if not description:
+        response = _get(url)
+        if response:
+            page = BeautifulSoup(response.text, "html.parser")
+            meta = page.find("meta", attrs={"name": "description"}) or page.find(
+                "meta", attrs={"property": "og:description"}
+            )
+            if meta and meta.get("content"):
+                description = meta["content"].strip()
+
+    if description:
+        return (
+            f"Video title: {title}\n"
+            f"Source: YouTube metadata fallback because transcript was unavailable.\n"
+            f"Description:\n{description}"
+        )
+
+    return (
+        f"Video title: {title}\n"
+        "Source: YouTube metadata fallback because transcript was unavailable.\n"
+        "Description unavailable."
+    )
+
+
 def scrape_youtube(identifier):
     response = _get(identifier)
     if not response:
@@ -181,9 +215,11 @@ def scrape_youtube(identifier):
         )
         log.info("YouTube '%s' transcript (%d chars)", title, len(raw_text))
     except (TranscriptsDisabled, NoTranscriptFound):
-        raw_text = f"[No transcript available for: {title}]"
+        raw_text = get_youtube_fallback_text(entry, url, title)
+        log.info("YouTube '%s' using metadata fallback", title)
     except Exception as exc:
-        raw_text = f"[Transcript failed: {exc}]"
+        raw_text = get_youtube_fallback_text(entry, url, title)
+        log.warning("YouTube '%s' transcript failed, using metadata fallback: %s", title, exc)
 
     return {"id": video_id, "title": title, "url": url, "raw_text": raw_text}
 
