@@ -7,19 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink:#0d1117;--surface:#111827;--card:#161f2e;--border:#1e2d42;
-    --accent:#3b82f6;--accent2:#06b6d4;--green:#10b981;--red:#ef4444;
-    --amber:#f59e0b;--muted:#4b5563;--text:#e2e8f0;--text-dim:#94a3b8;
-    --glow:rgba(59,130,246,0.15);
-  }
+  :root{--ink:#0d1117;--surface:#111827;--card:#161f2e;--border:#1e2d42;--accent:#3b82f6;--accent2:#06b6d4;--green:#10b981;--red:#ef4444;--amber:#f59e0b;--muted:#4b5563;--text:#e2e8f0;--text-dim:#94a3b8;--glow:rgba(59,130,246,0.15);}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Inter',sans-serif;background:var(--ink);color:var(--text);min-height:100vh;overflow-x:hidden;}
   body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
-
-  /* LOGIN */
   #login-screen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:var(--ink);}
-  .login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px 44px;width:400px;box-shadow:0 0 80px rgba(59,130,246,0.08);position:relative;overflow:hidden;}
+  .login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:48px 44px;width:420px;box-shadow:0 0 80px rgba(59,130,246,0.08);position:relative;overflow:hidden;}
   .login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
   .login-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
   .login-title{font-family:'Syne',sans-serif;font-weight:700;font-size:24px;color:var(--text);margin-bottom:8px;}
@@ -40,11 +33,7 @@
   .btn-success:hover{background:rgba(16,185,129,0.25);}
   .btn-ghost{background:rgba(255,255,255,0.05);color:var(--text-dim);border:1px solid var(--border);}
   .btn-ghost:hover{background:rgba(255,255,255,0.1);color:var(--text);}
-  .btn-warning{background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.25);}
-  .btn-warning:hover{background:rgba(245,158,11,0.25);}
   .error-msg{color:var(--red);font-size:13px;margin-bottom:12px;display:none;}
-
-  /* APP */
   #app{display:none;position:relative;z-index:1;}
   .topbar{height:60px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 32px;gap:16px;background:rgba(17,24,39,0.8);backdrop-filter:blur(12px);position:sticky;top:0;z-index:50;}
   .topbar-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;letter-spacing:2px;color:var(--accent);}
@@ -67,13 +56,10 @@
   .page-header{margin-bottom:28px;}
   .page-title{font-family:'Syne',sans-serif;font-weight:700;font-size:22px;color:var(--text);margin-bottom:4px;}
   .page-sub{font-size:13px;color:var(--text-dim);}
-
-  /* CARDS */
   .card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
   .card-top{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
   .card-name{font-family:'Syne',sans-serif;font-weight:600;font-size:15px;color:var(--text);}
   .card-url{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:2px;word-break:break-all;}
-  .card-meta{padding:10px 20px;background:rgba(0,0,0,0.2);font-size:12px;color:var(--text-dim);}
   .badge{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
   .badge-yt{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
   .badge-web{background:rgba(6,182,212,0.15);color:#67e8f9;border:1px solid rgba(6,182,212,0.2);}
@@ -82,17 +68,12 @@
   .badge-fail{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
   .badge-running{background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.2);}
   .actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
-
-  /* FORM PANEL */
   .form-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px;position:relative;overflow:hidden;}
   .form-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
   .form-panel h3{font-family:'Syne',sans-serif;font-weight:600;font-size:14px;color:var(--text-dim);margin-bottom:20px;text-transform:uppercase;letter-spacing:1px;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  .form-group{margin-bottom:0;}
-  .form-group.full{grid-column:1/-1;}
+  .form-group{margin-bottom:0;}.form-group.full{grid-column:1/-1;}
   select option{background:var(--surface);}
-
-  /* STATS */
   .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
   .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;}
   .stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
@@ -103,8 +84,6 @@
   .stat-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
   .stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:var(--text);}
   .stat-sub{font-size:11px;color:var(--text-dim);margin-top:4px;}
-
-  /* RUN PANEL */
   .run-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin-bottom:28px;position:relative;overflow:hidden;}
   .run-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--accent2));}
   .run-panel-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
@@ -116,19 +95,25 @@
   .run-status.error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;display:flex;align-items:center;gap:10px;}
   .spinner{width:16px;height:16px;border:2px solid rgba(245,158,11,0.3);border-top-color:#fcd34d;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;}
   @keyframes spin{to{transform:rotate(360deg);}}
-
-  /* TOKEN PANEL */
-  .token-panel{background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.15);border-radius:12px;padding:20px 24px;margin-bottom:20px;}
-  .token-panel p{font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;}
-  .token-input-row{display:flex;gap:10px;align-items:center;}
-  .token-input-row input{flex:1;margin-bottom:0;font-size:12px;}
-  .token-saved{font-size:12px;color:var(--green);margin-top:8px;display:none;}
-
-  /* SYNC STATUS */
   .sync-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:8px;margin-bottom:20px;font-size:13px;color:var(--green);}
   .sync-bar.syncing{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:#fcd34d;}
   .sync-bar.error{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2);color:#f87171;}
-
+  /* SENT EMAILS */
+  .email-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:border-color 0.2s;}
+  .email-card:hover{border-color:rgba(59,130,246,0.3);}
+  .email-card-header{padding:16px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;}
+  .email-card-body{padding:0 20px 16px;border-top:1px solid var(--border);display:none;}
+  .email-card-body.open{display:block;}
+  .email-icon{font-size:24px;flex-shrink:0;}
+  .email-info{flex:1;}
+  .email-subject{font-family:'Syne',sans-serif;font-weight:600;font-size:14px;color:var(--text);margin-bottom:3px;}
+  .email-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);}
+  .email-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+  .tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;}
+  .tag-new{background:rgba(16,185,129,0.15);color:#34d399;}
+  .tag-noupdate{background:rgba(245,158,11,0.1);color:#fcd34d;}
+  .tag-error{background:rgba(239,68,68,0.1);color:#f87171;}
+  .tag-recipients{background:rgba(59,130,246,0.1);color:#93c5fd;}
   /* HISTORY */
   .history-item{display:flex;align-items:center;gap:16px;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;transition:border-color 0.2s;}
   .history-item:hover{border-color:rgba(59,130,246,0.3);}
@@ -137,17 +122,16 @@
   .history-time{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);}
   .history-link{font-size:11px;color:var(--accent);text-decoration:none;}
   .history-link:hover{text-decoration:underline;}
-  .history-empty{text-align:center;padding:40px;color:var(--text-dim);font-size:13px;}
-
-  /* TOAST */
+  .empty-state{text-align:center;padding:48px 20px;color:var(--text-dim);font-size:13px;}
+  .empty-icon{font-size:40px;margin-bottom:12px;}
   .toast-container{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:999;}
   .toast{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-size:13px;color:var(--text);display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:slide-in 0.3s ease;min-width:280px;}
   @keyframes slide-in{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
   @keyframes slide-out{from{transform:translateX(0);opacity:1;}to{transform:translateX(120%);opacity:0;}}
   .toast.success{border-left:3px solid var(--green);}
   .toast.error{border-left:3px solid var(--red);}
-  .toast.info{border-left:3px solid var(--accent);}
   ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  code{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);}
 </style>
 </head>
 <body>
@@ -157,10 +141,10 @@
   <div class="login-box">
     <div class="login-logo">MIT Control Panel</div>
     <div class="login-title">Good morning, Akhil</div>
-    <div class="login-sub">Password to unlock · GitHub token to edit sources live</div>
+    <div class="login-sub">Enter password + GitHub token to unlock live editing</div>
     <label class="field-label">Dashboard Password</label>
     <input type="password" id="pw-input" placeholder="••••••••">
-    <label class="field-label">GitHub Token <span style="color:var(--muted);font-size:10px;">(for live editing — optional)</span></label>
+    <label class="field-label">GitHub Token <span style="color:var(--muted);font-size:10px;">(ghp_xxx — for live editing)</span></label>
     <input type="password" id="login-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
     <div class="error-msg" id="pw-error">Incorrect password. Try again.</div>
     <button class="btn btn-primary" onclick="doLogin()">🔓 Unlock Dashboard</button>
@@ -197,6 +181,7 @@
         <div class="sidebar-label">Actions</div>
         <div class="nav-item" onclick="showPage('run',this)"><span class="nav-icon">▶️</span> Manual Run</div>
         <div class="nav-item" onclick="showPage('history',this)"><span class="nav-icon">📅</span> Run History</div>
+        <div class="nav-item" onclick="showPage('emails',this)"><span class="nav-icon">📨</span> Sent Emails</div>
       </div>
       <div class="sidebar-section" style="margin-top:8px;">
         <div class="sidebar-label">Live Configuration</div>
@@ -216,98 +201,91 @@
         <div class="stats-grid">
           <div class="stat-card blue"><div class="stat-label">Sources</div><div class="stat-value" id="stat-sources">—</div><div class="stat-sub">Active feeds</div></div>
           <div class="stat-card cyan"><div class="stat-label">Recipients</div><div class="stat-value" id="stat-recipients">—</div><div class="stat-sub">Subscribed emails</div></div>
-          <div class="stat-card green"><div class="stat-label">Last Run</div><div class="stat-value" id="stat-last-run">—</div><div class="stat-sub" id="stat-last-status">Connect token</div></div>
+          <div class="stat-card green"><div class="stat-label">Emails Sent</div><div class="stat-value" id="stat-emails">—</div><div class="stat-sub">Last 30 days</div></div>
           <div class="stat-card amber"><div class="stat-label">Next Run</div><div class="stat-value">7 AM</div><div class="stat-sub">IST daily auto</div></div>
         </div>
-        <div id="dash-content"><div style="color:var(--text-dim);font-size:13px;">Connect your GitHub token to load live data.</div></div>
+        <div id="dash-content"><div style="color:var(--text-dim);font-size:13px;">Loading from GitHub...</div></div>
       </div>
 
       <!-- MANUAL RUN -->
       <div class="page" id="page-run">
         <div class="page-header">
           <div class="page-title">Manual Run</div>
-          <div class="page-sub">Trigger the tracker instantly</div>
+          <div class="page-sub">Trigger the tracker instantly — email will always be sent</div>
         </div>
         <div class="run-panel">
           <div class="run-panel-inner">
             <div class="run-panel-text">
               <h3>🚀 Run Morning Intelligence Tracker</h3>
-              <p>Triggers GitHub Actions immediately. Scrapes all sources, generates AI summaries, sends digest email. Takes ~2 minutes.</p>
+              <p>Triggers GitHub Actions immediately. Always sends a digest email — with new summaries for updated sources and "No updates" cards for unchanged ones.</p>
             </div>
             <button class="btn btn-run" id="run-btn" onclick="triggerRun()">▶ Run Now</button>
           </div>
           <div class="run-status" id="run-status"></div>
         </div>
         <div style="font-size:12px;color:var(--muted);padding:12px 16px;background:rgba(0,0,0,0.2);border-radius:8px;">
-          Repo: <span style="font-family:'DM Mono',monospace;color:var(--accent2);">akhilguptakhandelwal-ops/morning-tracker1</span> · Workflow: <span style="font-family:'DM Mono',monospace;color:var(--accent2);">morning_tracker.yml</span>
+          Repo: <code>akhilguptakhandelwal-ops/morning-tracker1</code> · Workflow: <code>morning_tracker.yml</code>
         </div>
       </div>
 
-      <!-- HISTORY -->
+      <!-- RUN HISTORY -->
       <div class="page" id="page-history">
         <div class="page-header">
           <div class="page-title">Run History</div>
-          <div class="page-sub">Last 7 days of workflow executions</div>
+          <div class="page-sub">Last 7 days of GitHub Actions executions</div>
         </div>
         <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
           <button class="btn btn-sm btn-ghost" onclick="loadHistory()">↻ Refresh</button>
         </div>
-        <div id="history-list"><div class="history-empty">Connect your GitHub token to see run history.</div></div>
+        <div id="history-list"><div class="empty-state"><div class="empty-icon">📅</div>Connect GitHub token to see run history.</div></div>
       </div>
 
-      <!-- SOURCES — LIVE EDIT -->
+      <!-- SENT EMAILS -->
+      <div class="page" id="page-emails">
+        <div class="page-header">
+          <div class="page-title">Sent Emails</div>
+          <div class="page-sub">Every digest email sent — loaded from <code>sent_log.json</code> in your repo</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+          <button class="btn btn-sm btn-ghost" onclick="loadSentEmails()">↻ Refresh</button>
+        </div>
+        <div id="emails-list"><div class="empty-state"><div class="empty-icon">📨</div>Loading sent email log...</div></div>
+      </div>
+
+      <!-- SOURCES -->
       <div class="page" id="page-sources">
         <div class="page-header">
           <div class="page-title">Sources</div>
-          <div class="page-sub">Changes save directly to <code style="font-family:'DM Mono',monospace;color:var(--accent2);">morning_tracker.py</code> on GitHub</div>
+          <div class="page-sub">Changes save directly to <code>morning_tracker.py</code> on GitHub</div>
         </div>
         <div id="sources-sync-bar" class="sync-bar" style="display:none;"></div>
-
         <div class="form-panel">
           <h3>➕ Add New Source</h3>
           <div class="form-row">
-            <div class="form-group">
-              <label class="field-label">Source Name</label>
-              <input type="text" id="src-name" placeholder="e.g. TaxGuru">
-            </div>
-            <div class="form-group">
-              <label class="field-label">Type</label>
-              <select id="src-type">
-                <option value="youtube">YouTube</option>
-                <option value="website">Website</option>
-              </select>
-            </div>
-            <div class="form-group full">
-              <label class="field-label">URL</label>
-              <input type="text" id="src-url" placeholder="https://taxguru.in  or  youtube.com/feeds/videos.xml?channel_id=...">
-            </div>
+            <div class="form-group"><label class="field-label">Source Name</label><input type="text" id="src-name" placeholder="e.g. TaxGuru"></div>
+            <div class="form-group"><label class="field-label">Type</label><select id="src-type"><option value="youtube">YouTube</option><option value="website">Website</option></select></div>
+            <div class="form-group full"><label class="field-label">URL</label><input type="text" id="src-url" placeholder="https://taxguru.in  or  youtube.com/feeds/videos.xml?channel_id=..."></div>
           </div>
           <button class="btn btn-success" onclick="addSourceLive()">➕ Add &amp; Save to GitHub</button>
         </div>
-
-        <div id="sources-list"><div style="color:var(--text-dim);font-size:13px;padding:20px;">Loading sources from GitHub...</div></div>
+        <div id="sources-list"><div style="color:var(--text-dim);font-size:13px;padding:20px;">Loading...</div></div>
       </div>
 
-      <!-- RECIPIENTS — LIVE EDIT -->
+      <!-- RECIPIENTS -->
       <div class="page" id="page-recipients">
         <div class="page-header">
           <div class="page-title">Recipients</div>
-          <div class="page-sub">Changes save directly to <code style="font-family:'DM Mono',monospace;color:var(--accent2);">morning_tracker.py</code> on GitHub</div>
+          <div class="page-sub">Changes save directly to <code>morning_tracker.py</code> on GitHub</div>
         </div>
         <div id="recipients-sync-bar" class="sync-bar" style="display:none;"></div>
-
         <div class="form-panel">
           <h3>➕ Add Recipient</h3>
           <div style="display:flex;gap:12px;align-items:flex-end;">
-            <div style="flex:1;">
-              <label class="field-label">Email Address</label>
-              <input type="email" id="rec-email" placeholder="colleague@company.com" style="margin-bottom:0;">
-            </div>
+            <div style="flex:1;"><label class="field-label">Email Address</label><input type="email" id="rec-email" placeholder="colleague@company.com" style="margin-bottom:0;"></div>
             <button class="btn btn-success" onclick="addRecipientLive()" style="white-space:nowrap;">➕ Add &amp; Save to GitHub</button>
           </div>
         </div>
-
-        <div id="recipients-list"><div style="color:var(--text-dim);font-size:13px;padding:20px;">Loading recipients from GitHub...</div></div>
+        <div id="recipients-list"><div style="color:var(--text-dim);font-size:13px;padding:20px;">Loading...</div></div>
       </div>
 
     </div>
@@ -317,466 +295,333 @@
 <div class="toast-container" id="toasts"></div>
 
 <script>
-// ══════════════════════════════════════════════════
-// CONFIG
-// ══════════════════════════════════════════════════
-const OWNER   = 'akhilguptakhandelwal-ops';
-const REPO    = 'morning-tracker1';
-const FILE    = 'morning_tracker.py';
+const OWNER    = 'akhilguptakhandelwal-ops';
+const REPO     = 'morning-tracker1';
+const FILE     = 'morning_tracker.py';
+const LOG_FILE = 'sent_log.json';
 const WORKFLOW = 'morning_tracker.yml';
 const PASS_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // "password"
 
-// ══════════════════════════════════════════════════
-// AUTH
-// ══════════════════════════════════════════════════
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+async function sha256(msg){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
 
-async function doLogin() {
-  const pw = document.getElementById('pw-input').value;
-  const hash = await sha256(pw);
-  if (hash !== PASS_HASH) {
-    const err = document.getElementById('pw-error');
-    err.style.display = 'block';
-    setTimeout(()=>err.style.display='none', 3000);
-    return;
-  }
-  const token = document.getElementById('login-token').value.trim();
-  if (token) sessionStorage.setItem('gh_token', token);
+async function doLogin(){
+  const pw=document.getElementById('pw-input').value;
+  if(await sha256(pw)!==PASS_HASH){document.getElementById('pw-error').style.display='block';setTimeout(()=>document.getElementById('pw-error').style.display='none',3000);return;}
+  const token=document.getElementById('login-token').value.trim();
+  if(token) sessionStorage.setItem('gh_token',token);
   sessionStorage.setItem('mit_auth','1');
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  init();
-}
-
-function doLogout() {
-  sessionStorage.clear();
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('app').style.display='none';
-  document.getElementById('pw-input').value='';
-  document.getElementById('login-token').value='';
-}
-
-document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-
-if (sessionStorage.getItem('mit_auth')) {
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
   init();
 }
+function doLogout(){sessionStorage.clear();document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('pw-input').value='';document.getElementById('login-token').value='';}
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+if(sessionStorage.getItem('mit_auth')){document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';init();}
 
-// ══════════════════════════════════════════════════
-// GITHUB API HELPERS
-// ══════════════════════════════════════════════════
-function getToken() { return sessionStorage.getItem('gh_token')||''; }
-
-async function ghFetch(path, opts={}) {
-  const token = getToken();
-  const headers = { 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28' };
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-  return fetch(`https://api.github.com/repos/${OWNER}/${REPO}/${path}`, { ...opts, headers: {...headers, ...(opts.headers||{})} });
+// ── GITHUB API ────────────────────────────────────────────────────────────────
+function getToken(){return sessionStorage.getItem('gh_token')||'';}
+async function ghFetch(path,opts={}){
+  const token=getToken();
+  const headers={'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  if(token) headers['Authorization']=`Bearer ${token}`;
+  return fetch(`https://api.github.com/repos/${OWNER}/${REPO}/${path}`,{...opts,headers:{...headers,...(opts.headers||{})}});
 }
-
-// Fetch morning_tracker.py content + SHA from GitHub
-async function fetchTrackerFile() {
-  const resp = await ghFetch(`contents/${FILE}`);
-  if (!resp.ok) throw new Error(`GitHub API ${resp.status}`);
-  const data = await resp.json();
-  const content = atob(data.content.replace(/\n/g,''));
-  return { content, sha: data.sha };
+async function fetchFile(filename){
+  const resp=await ghFetch(`contents/${filename}`);
+  if(!resp.ok) throw new Error(`GitHub API ${resp.status}`);
+  const data=await resp.json();
+  return{content:decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))),sha:data.sha};
 }
-
-// Push updated content back to GitHub
-async function pushTrackerFile(newContent, sha, message) {
-  const encoded = btoa(unescape(encodeURIComponent(newContent)));
-  const resp = await ghFetch(`contents/${FILE}`, {
-    method: 'PUT',
-    headers: { 'Content-Type':'application/json' },
-    body: JSON.stringify({ message, content: encoded, sha })
-  });
-  if (!resp.ok) {
-    const err = await resp.json().catch(()=>({}));
-    throw new Error(err.message || `GitHub API ${resp.status}`);
-  }
+async function pushFile(filename,newContent,sha,message){
+  const encoded=btoa(unescape(encodeURIComponent(newContent)));
+  const resp=await ghFetch(`contents/${filename}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,content:encoded,sha})});
+  if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.message||`GitHub API ${resp.status}`);}
   return resp.json();
 }
 
-// ══════════════════════════════════════════════════
-// PARSE sources_seed from Python file
-// ══════════════════════════════════════════════════
-function parseSources(content) {
-  const sources = [];
-  // Match lines like: ("youtube", "Name", "url"),
-  const re = /\(\s*"(youtube|website)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)/g;
+// ── PARSE PYTHON ──────────────────────────────────────────────────────────────
+function parseSources(content){
+  const sources=[];
+  const block=content.match(/sources_seed\s*=\s*\[([\s\S]*?)\]/);
+  if(!block) return sources;
+  const re=/\(\s*"(youtube|website)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)/g;
   let m;
-  // Only parse within sources_seed block
-  const block = content.match(/sources_seed\s*=\s*\[([\s\S]*?)\]/);
-  if (!block) return sources;
-  while ((m = re.exec(block[1])) !== null) {
-    sources.push({ type: m[1], name: m[2], url: m[3] });
-  }
+  while((m=re.exec(block[1]))!==null) sources.push({type:m[1],name:m[2],url:m[3]});
   return sources;
 }
-
-// Parse recipients from Python file
-function parseRecipients(content) {
-  const recipients = [];
-  const block = content.match(/for email in \(([\s\S]*?)\):/);
-  if (!block) return recipients;
-  const re = /"([^"]+@[^"]+)"/g;
-  let m;
-  while ((m = re.exec(block[1])) !== null) {
-    recipients.push(m[1]);
-  }
-  return recipients;
+function parseRecipients(content){
+  const block=content.match(/for email in \(([\s\S]*?)\):/);
+  if(!block) return [];
+  const re=/"([^"]+@[^"]+)"/g; let m; const out=[];
+  while((m=re.exec(block[1]))!==null) out.push(m[1]);
+  return out;
+}
+function rebuildSources(content,sources){
+  const lines=sources.map(s=>`            ("${s.type}", "${s.name}",\n             "${s.url}"),`).join('\n');
+  return content.replace(/sources_seed\s*=\s*\[[\s\S]*?\]/,`sources_seed = [\n${lines}\n        ]`);
+}
+function rebuildRecipients(content,recipients){
+  const emails=recipients.map(e=>`"${e}"`).join(', ');
+  return content.replace(/for email in \([\s\S]*?\):/,`for email in (${emails}):`);
 }
 
-// Rebuild sources_seed block in Python content
-function rebuildSources(content, sources) {
-  const lines = sources.map(s =>
-    `            ("${s.type}", "${s.name}",\n             "${s.url}"),`
-  ).join('\n');
-  const newBlock = `sources_seed = [\n${lines}\n        ]`;
-  return content.replace(/sources_seed\s*=\s*\[[\s\S]*?\]/, newBlock);
-}
+// ── INIT ──────────────────────────────────────────────────────────────────────
+let cachedContent='',cachedSha='',cachedSources=[],cachedRecipients=[];
 
-// Rebuild recipients block in Python content
-function rebuildRecipients(content, recipients) {
-  const emails = recipients.map(e => `"${e}"`).join(', ');
-  return content.replace(
-    /for email in \([\s\S]*?\):/,
-    `for email in (${emails}):`
-  );
-}
-
-// ══════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════
-async function init() {
-  startClock();
-  updateGithubStatus();
+async function init(){
+  startClock(); updateGithubStatus();
   await loadFromGitHub();
   loadHistory();
+  loadSentEmails();
 }
 
-function updateGithubStatus() {
-  const token = getToken();
-  const el = document.getElementById('github-status');
-  if (token) {
-    el.innerHTML = '🟢 GitHub Connected';
-    el.style.color = 'var(--green)';
-  } else {
-    el.innerHTML = '⚪ No Token — Read Only';
-    el.style.color = 'var(--text-dim)';
-  }
+function updateGithubStatus(){
+  const el=document.getElementById('github-status');
+  const token=getToken();
+  if(token){el.innerHTML='🟢 GitHub Connected';el.style.color='var(--green)';}
+  else{el.innerHTML='⚪ Read Only';el.style.color='var(--text-dim)';}
 }
 
-// ══════════════════════════════════════════════════
-// LOAD DATA FROM GITHUB
-// ══════════════════════════════════════════════════
-let cachedContent = '';
-let cachedSha = '';
-let cachedSources = [];
-let cachedRecipients = [];
-
-async function loadFromGitHub() {
-  try {
-    const { content, sha } = await fetchTrackerFile();
-    cachedContent = content;
-    cachedSha = sha;
-    cachedSources = parseSources(content);
-    cachedRecipients = parseRecipients(content);
-    renderDashboard();
-    renderSources();
-    renderRecipients();
-    toast('Loaded live data from GitHub ✅', 'success');
-  } catch(e) {
-    toast('Could not load from GitHub: ' + e.message, 'error');
-    // show defaults
-    cachedSources = [
-      {type:'youtube',name:'Fintex Pro',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ'},
-      {type:'website',name:'Income Tax India',url:'https://incometaxindia.gov.in'},
-    ];
-    cachedRecipients = ['gupta_akhil@ymail.com','akhilgupta.khandelwal@gmail.com'];
+async function loadFromGitHub(){
+  try{
+    const{content,sha}=await fetchFile(FILE);
+    cachedContent=content; cachedSha=sha;
+    cachedSources=parseSources(content);
+    cachedRecipients=parseRecipients(content);
+    renderDashboard(); renderSources(); renderRecipients();
+    toast('Live data loaded from GitHub ✅','success');
+  }catch(e){
+    toast('Could not load from GitHub: '+e.message,'error');
+    cachedSources=[{type:'youtube',name:'Fintex Pro',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ'},{type:'website',name:'Income Tax India',url:'https://incometaxindia.gov.in'}];
+    cachedRecipients=['gupta_akhil@ymail.com','akhilgupta.khandelwal@gmail.com'];
     renderDashboard(); renderSources(); renderRecipients();
   }
 }
 
-// ══════════════════════════════════════════════════
-// RENDER DASHBOARD
-// ══════════════════════════════════════════════════
-function renderDashboard() {
-  document.getElementById('stat-sources').textContent = cachedSources.length;
-  document.getElementById('stat-recipients').textContent = cachedRecipients.length;
-  document.getElementById('last-update').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-
-  const srcHtml = cachedSources.map(s=>`
-    <div class="card" style="margin-bottom:10px;">
-      <div class="card-top">
-        <div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div>
-        <div class="actions">
-          <span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span>
-          <span class="badge badge-on">Active</span>
-        </div>
-      </div>
-    </div>`).join('');
-
-  const recHtml = cachedRecipients.map(e=>`
-    <div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-      <span style="font-size:18px;">📧</span>
-      <span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${e}</span>
-      <span class="badge badge-on">Subscribed</span>
-    </div>`).join('');
-
-  document.getElementById('dash-content').innerHTML = `
-    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Active Feeds</div>
-    ${srcHtml}
-    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px;">Recipients</div>
-    ${recHtml}`;
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDashboard(){
+  document.getElementById('stat-sources').textContent=cachedSources.length;
+  document.getElementById('stat-recipients').textContent=cachedRecipients.length;
+  document.getElementById('last-update').textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  const srcHtml=cachedSources.map(s=>`<div class="card" style="margin-bottom:10px;"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">Active</span></div></div></div>`).join('');
+  const recHtml=cachedRecipients.map(e=>`<div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;"><span style="font-size:18px;">📧</span><span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${e}</span><span class="badge badge-on">Subscribed</span></div>`).join('');
+  document.getElementById('dash-content').innerHTML=`
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Active Feeds</div>${srcHtml}
+    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin:20px 0 12px;">Recipients</div>${recHtml}`;
 }
 
-// ══════════════════════════════════════════════════
-// SOURCES — LIVE EDIT
-// ══════════════════════════════════════════════════
-function renderSources() {
-  const el = document.getElementById('sources-list');
-  if (!cachedSources.length) { el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No sources found.</div>'; return; }
-  el.innerHTML = cachedSources.map((s,i)=>`
-    <div class="card">
-      <div class="card-top">
-        <div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div>
-        <div class="actions">
-          <span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span>
-          <span class="badge badge-on">Active</span>
-          <button class="btn btn-sm btn-danger" onclick="removeSourceLive(${i})">🗑 Remove</button>
+// ── SENT EMAILS ───────────────────────────────────────────────────────────────
+async function loadSentEmails(){
+  const el=document.getElementById('emails-list');
+  el.innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div>Loading sent email log...</div>';
+  try{
+    const{content}=await fetchFile(LOG_FILE);
+    const logs=JSON.parse(content);
+    document.getElementById('stat-emails').textContent=logs.length;
+    if(!logs.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div>No emails sent yet. Run the tracker to send your first digest.</div>';return;}
+    el.innerHTML=logs.map((entry,i)=>{
+      const d=new Date(entry.timestamp);
+      const dateStr=d.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
+      const timeStr=d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+      const sentIcon=entry.sent?'✅':'❌';
+      const newTags=(entry.new_sources||[]).map(s=>`<span class="tag tag-new">🆕 ${s}</span>`).join('');
+      const noTags=(entry.no_update||[]).map(s=>`<span class="tag tag-noupdate">📭 ${s}</span>`).join('');
+      const errTags=(entry.errors||[]).map(s=>`<span class="tag tag-error">⚠️ ${s}</span>`).join('');
+      const recTags=(entry.recipients||[]).map(r=>`<span class="tag tag-recipients">📧 ${r}</span>`).join('');
+      return`<div class="email-card">
+        <div class="email-card-header" onclick="toggleEmail(${i})">
+          <div class="email-icon">${sentIcon}</div>
+          <div class="email-info">
+            <div class="email-subject">${entry.subject||entry.date}</div>
+            <div class="email-meta">${dateStr} · ${timeStr} IST · ${entry.report_count||0} new source(s)</div>
+          </div>
+          <span style="color:var(--text-dim);font-size:12px;">▾</span>
         </div>
-      </div>
-    </div>`).join('');
+        <div class="email-card-body" id="email-body-${i}">
+          <div class="email-tags" style="padding-top:12px;">
+            ${newTags}${noTags}${errTags}${recTags}
+          </div>
+          <div style="margin-top:12px;font-size:12px;color:var(--text-dim);">
+            Status: <strong style="color:${entry.sent?'var(--green)':'var(--red)'}">${entry.sent?'Delivered ✅':'Failed ❌'}</strong>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    if(e.message.includes('404')||e.message.includes('API 404')){
+      el.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div>No sent_log.json yet. Run the tracker once to generate it.</div>';
+      document.getElementById('stat-emails').textContent='0';
+    } else {
+      el.innerHTML=`<div class="empty-state"><div class="empty-icon">❌</div>${e.message}</div>`;
+    }
+  }
 }
 
-async function addSourceLive() {
-  if (!getToken()) { toast('GitHub token required to edit sources.','error'); return; }
-  const name = document.getElementById('src-name').value.trim();
-  const type = document.getElementById('src-type').value;
-  const url  = document.getElementById('src-url').value.trim();
-  if (!name||!url) { toast('Name and URL are required.','error'); return; }
-  if (cachedSources.find(s=>s.url===url)) { toast('This URL already exists.','error'); return; }
+function toggleEmail(i){
+  const body=document.getElementById(`email-body-${i}`);
+  body.classList.toggle('open');
+}
 
+// ── SOURCES LIVE EDIT ─────────────────────────────────────────────────────────
+function renderSources(){
+  const el=document.getElementById('sources-list');
+  if(!cachedSources.length){el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No sources found.</div>';return;}
+  el.innerHTML=cachedSources.map((s,i)=>`<div class="card"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">Active</span><button class="btn btn-sm btn-danger" onclick="removeSourceLive(${i})">🗑 Remove</button></div></div></div>`).join('');
+}
+
+async function addSourceLive(){
+  if(!getToken()){toast('GitHub token required.','error');return;}
+  const name=document.getElementById('src-name').value.trim(),type=document.getElementById('src-type').value,url=document.getElementById('src-url').value.trim();
+  if(!name||!url){toast('Name and URL required.','error');return;}
+  if(cachedSources.find(s=>s.url===url)){toast('URL already exists.','error');return;}
   showSyncBar('sources','syncing','⏳ Saving to GitHub...');
-  try {
-    const { content, sha } = await fetchTrackerFile();
+  try{
+    const{content,sha}=await fetchFile(FILE);
     cachedSources.push({type,name,url});
-    const newContent = rebuildSources(content, cachedSources);
-    await pushTrackerFile(newContent, sha, `Dashboard: add source "${name}"`);
-    cachedContent = newContent; cachedSha = sha;
+    await pushFile(FILE,rebuildSources(content,cachedSources),sha,`Dashboard: add source "${name}"`);
     ['src-name','src-url'].forEach(id=>document.getElementById(id).value='');
-    renderSources(); renderDashboard();
-    showSyncBar('sources','success','✅ Saved to GitHub! Will take effect on next run.');
-    toast(`Source "${name}" added and saved to GitHub ✅`,'success');
-  } catch(e) {
-    cachedSources.pop();
-    showSyncBar('sources','error','❌ Save failed: '+e.message);
-    toast('Save failed: '+e.message,'error');
-  }
+    renderSources();renderDashboard();
+    showSyncBar('sources','success','✅ Saved to GitHub! Takes effect on next run.');
+    toast(`"${name}" added and saved ✅`,'success');
+  }catch(e){cachedSources.pop();showSyncBar('sources','error','❌ '+e.message);toast('Failed: '+e.message,'error');}
 }
 
-async function removeSourceLive(index) {
-  if (!getToken()) { toast('GitHub token required.','error'); return; }
-  const s = cachedSources[index];
-  if (!confirm(`Remove "${s.name}"?`)) return;
-
+async function removeSourceLive(i){
+  if(!getToken()){toast('GitHub token required.','error');return;}
+  const s=cachedSources[i];
+  if(!confirm(`Remove "${s.name}"?`))return;
   showSyncBar('sources','syncing','⏳ Removing from GitHub...');
-  try {
-    const { content, sha } = await fetchTrackerFile();
-    cachedSources.splice(index,1);
-    const newContent = rebuildSources(content, cachedSources);
-    await pushTrackerFile(newContent, sha, `Dashboard: remove source "${s.name}"`);
-    renderSources(); renderDashboard();
-    showSyncBar('sources','success',`✅ "${s.name}" removed from GitHub.`);
+  try{
+    const{content,sha}=await fetchFile(FILE);
+    cachedSources.splice(i,1);
+    await pushFile(FILE,rebuildSources(content,cachedSources),sha,`Dashboard: remove source "${s.name}"`);
+    renderSources();renderDashboard();
+    showSyncBar('sources','success',`✅ "${s.name}" removed.`);
     toast(`"${s.name}" removed ✅`,'success');
-  } catch(e) {
-    cachedSources.splice(index,0,s);
-    showSyncBar('sources','error','❌ Remove failed: '+e.message);
-    toast('Remove failed: '+e.message,'error');
-  }
+  }catch(e){cachedSources.splice(i,0,s);showSyncBar('sources','error','❌ '+e.message);toast('Failed: '+e.message,'error');}
 }
 
-// ══════════════════════════════════════════════════
-// RECIPIENTS — LIVE EDIT
-// ══════════════════════════════════════════════════
-function renderRecipients() {
-  const el = document.getElementById('recipients-list');
-  if (!cachedRecipients.length) { el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No recipients found.</div>'; return; }
-  el.innerHTML = cachedRecipients.map((e,i)=>`
-    <div class="card" style="padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:8px;">
-      <span style="font-size:20px;">📧</span>
-      <span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${e}</span>
-      <span class="badge badge-on">Subscribed</span>
-      <button class="btn btn-sm btn-danger" onclick="removeRecipientLive(${i})">🗑 Remove</button>
-    </div>`).join('');
+// ── RECIPIENTS LIVE EDIT ──────────────────────────────────────────────────────
+function renderRecipients(){
+  const el=document.getElementById('recipients-list');
+  if(!cachedRecipients.length){el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No recipients found.</div>';return;}
+  el.innerHTML=cachedRecipients.map((e,i)=>`<div class="card" style="padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:8px;"><span style="font-size:20px;">📧</span><span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${e}</span><span class="badge badge-on">Subscribed</span><button class="btn btn-sm btn-danger" onclick="removeRecipientLive(${i})">🗑 Remove</button></div>`).join('');
 }
 
-async function addRecipientLive() {
-  if (!getToken()) { toast('GitHub token required to edit recipients.','error'); return; }
-  const email = document.getElementById('rec-email').value.trim();
-  if (!email||!email.includes('@')) { toast('Enter a valid email.','error'); return; }
-  if (cachedRecipients.includes(email)) { toast('Already subscribed.','error'); return; }
-
+async function addRecipientLive(){
+  if(!getToken()){toast('GitHub token required.','error');return;}
+  const email=document.getElementById('rec-email').value.trim();
+  if(!email||!email.includes('@')){toast('Valid email required.','error');return;}
+  if(cachedRecipients.includes(email)){toast('Already subscribed.','error');return;}
   showSyncBar('recipients','syncing','⏳ Saving to GitHub...');
-  try {
-    const { content, sha } = await fetchTrackerFile();
+  try{
+    const{content,sha}=await fetchFile(FILE);
     cachedRecipients.push(email);
-    const newContent = rebuildRecipients(content, cachedRecipients);
-    await pushTrackerFile(newContent, sha, `Dashboard: add recipient "${email}"`);
+    await pushFile(FILE,rebuildRecipients(content,cachedRecipients),sha,`Dashboard: add recipient "${email}"`);
     document.getElementById('rec-email').value='';
-    renderRecipients(); renderDashboard();
+    renderRecipients();renderDashboard();
     showSyncBar('recipients','success','✅ Saved to GitHub!');
-    toast(`${email} added and saved to GitHub ✅`,'success');
-  } catch(e) {
-    cachedRecipients.pop();
-    showSyncBar('recipients','error','❌ Save failed: '+e.message);
-    toast('Save failed: '+e.message,'error');
-  }
+    toast(`${email} added ✅`,'success');
+  }catch(e){cachedRecipients.pop();showSyncBar('recipients','error','❌ '+e.message);toast('Failed: '+e.message,'error');}
 }
 
-async function removeRecipientLive(index) {
-  if (!getToken()) { toast('GitHub token required.','error'); return; }
-  const email = cachedRecipients[index];
-  if (!confirm(`Remove ${email}?`)) return;
-
-  showSyncBar('recipients','syncing','⏳ Removing from GitHub...');
-  try {
-    const { content, sha } = await fetchTrackerFile();
-    cachedRecipients.splice(index,1);
-    const newContent = rebuildRecipients(content, cachedRecipients);
-    await pushTrackerFile(newContent, sha, `Dashboard: remove recipient "${email}"`);
-    renderRecipients(); renderDashboard();
-    showSyncBar('recipients','success',`✅ ${email} removed from GitHub.`);
+async function removeRecipientLive(i){
+  if(!getToken()){toast('GitHub token required.','error');return;}
+  const email=cachedRecipients[i];
+  if(!confirm(`Remove ${email}?`))return;
+  showSyncBar('recipients','syncing','⏳ Removing...');
+  try{
+    const{content,sha}=await fetchFile(FILE);
+    cachedRecipients.splice(i,1);
+    await pushFile(FILE,rebuildRecipients(content,cachedRecipients),sha,`Dashboard: remove recipient "${email}"`);
+    renderRecipients();renderDashboard();
+    showSyncBar('recipients','success',`✅ ${email} removed.`);
     toast(`${email} removed ✅`,'success');
-  } catch(e) {
-    cachedRecipients.splice(index,0,email);
-    showSyncBar('recipients','error','❌ Remove failed: '+e.message);
-    toast('Remove failed: '+e.message,'error');
-  }
+  }catch(e){cachedRecipients.splice(i,0,email);showSyncBar('recipients','error','❌ '+e.message);toast('Failed: '+e.message,'error');}
 }
 
-// ══════════════════════════════════════════════════
-// SYNC BAR
-// ══════════════════════════════════════════════════
-function showSyncBar(page, type, msg) {
-  const el = document.getElementById(`${page}-sync-bar`);
-  el.className = `sync-bar ${type==='syncing'?'syncing':type==='error'?'error':''}`;
-  el.style.display = 'flex';
-  el.textContent = msg;
-  if (type !== 'syncing') setTimeout(()=>el.style.display='none', 4000);
-}
-
-// ══════════════════════════════════════════════════
-// MANUAL RUN
-// ══════════════════════════════════════════════════
-async function triggerRun() {
-  const token = getToken();
-  if (!token) { toast('GitHub token required to trigger runs.','error'); return; }
-  const btn = document.getElementById('run-btn');
-  const status = document.getElementById('run-status');
-  btn.disabled=true; btn.innerHTML='⏳ Triggering...';
-  status.className='run-status running';
-  status.innerHTML='<div class="spinner"></div> Sending trigger to GitHub Actions...';
-
-  try {
-    const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,{
+// ── MANUAL RUN ────────────────────────────────────────────────────────────────
+async function triggerRun(){
+  const token=getToken();
+  if(!token){toast('GitHub token required.','error');return;}
+  const btn=document.getElementById('run-btn'),status=document.getElementById('run-status');
+  btn.disabled=true;btn.innerHTML='⏳ Triggering...';
+  status.className='run-status running';status.innerHTML='<div class="spinner"></div> Sending trigger to GitHub Actions...';
+  try{
+    const resp=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/dispatches`,{
       method:'POST',
       headers:{'Authorization':`Bearer ${token}`,'Accept':'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'},
       body:JSON.stringify({ref:'main'})
     });
-    if (resp.status===204) {
+    if(resp.status===204){
       status.className='run-status success';
-      status.innerHTML='✅ Triggered! GitHub Actions is running now. Check Run History in ~2 minutes. Email will arrive shortly after.';
+      status.innerHTML='✅ Triggered! GitHub Actions is running. Check Run History in ~2 min. Email will arrive shortly.';
       toast('Tracker triggered ✅','success');
-      setTimeout(()=>loadHistory(), 10000);
-    } else {
-      const err = await resp.json().catch(()=>({}));
-      throw new Error(err.message||`HTTP ${resp.status}`);
+      setTimeout(()=>{loadHistory();loadSentEmails();},15000);
+    }else{
+      const err=await resp.json().catch(()=>({}));throw new Error(err.message||`HTTP ${resp.status}`);
     }
-  } catch(e) {
-    status.className='run-status error';
-    status.innerHTML=`❌ ${e.message}`;
-    toast('Trigger failed: '+e.message,'error');
-  }
-  btn.disabled=false; btn.innerHTML='▶ Run Now';
+  }catch(e){status.className='run-status error';status.innerHTML=`❌ ${e.message}`;toast('Trigger failed: '+e.message,'error');}
+  btn.disabled=false;btn.innerHTML='▶ Run Now';
 }
 
-// ══════════════════════════════════════════════════
-// RUN HISTORY
-// ══════════════════════════════════════════════════
-async function loadHistory() {
-  const list = document.getElementById('history-list');
-  const token = getToken();
-  if (!token) { list.innerHTML='<div class="history-empty">Connect your GitHub token to see run history.</div>'; return; }
-  list.innerHTML='<div class="history-empty">⏳ Loading...</div>';
-  try {
-    const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/runs?per_page=10`,{
+// ── RUN HISTORY ───────────────────────────────────────────────────────────────
+async function loadHistory(){
+  const list=document.getElementById('history-list');
+  const token=getToken();
+  if(!token){list.innerHTML='<div class="empty-state"><div class="empty-icon">🔑</div>Connect GitHub token to see run history.</div>';return;}
+  list.innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div>Loading...</div>';
+  try{
+    const resp=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/actions/workflows/${WORKFLOW}/runs?per_page=10`,{
       headers:{'Authorization':`Bearer ${token}`,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}
     });
-    if (!resp.ok) throw new Error(`API ${resp.status}`);
-    const data = await resp.json();
-    const sevenAgo = new Date(Date.now()-7*24*60*60*1000);
-    const runs = (data.workflow_runs||[]).filter(r=>new Date(r.created_at)>sevenAgo);
-
-    if (runs[0]) {
-      const d = new Date(runs[0].created_at);
-      document.getElementById('stat-last-run').textContent = d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
-      document.getElementById('stat-last-status').textContent = runs[0].conclusion==='success'?'✅ Success':runs[0].conclusion==='failure'?'❌ Failed':'⏳ Running';
-    }
-
-    if (!runs.length) { list.innerHTML='<div class="history-empty">No runs in last 7 days.</div>'; return; }
-
-    list.innerHTML = runs.map(r=>{
-      const start = new Date(r.created_at);
-      const end = r.updated_at ? new Date(r.updated_at) : null;
-      const dur = end&&r.conclusion ? Math.round((end-start)/1000)+'s' : '—';
-      const con = r.conclusion||r.status;
-      const icon = con==='success'?'✅':con==='failure'?'❌':con==='in_progress'?'⏳':'⚪';
-      const bc = con==='success'?'badge-success':con==='failure'?'badge-fail':'badge-running';
-      const bl = con==='success'?'Success':con==='failure'?'Failed':con==='in_progress'?'Running':'Queued';
-      const trig = r.event==='schedule'?'🕐 Scheduled':r.event==='workflow_dispatch'?'👆 Manual':'⚡ Push';
-      return `<div class="history-item">
-        <div style="font-size:20px;flex-shrink:0;">${icon}</div>
-        <div class="history-info">
-          <div class="history-name">${start.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'})} · ${start.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST</div>
-          <div class="history-time">${trig} · Duration: ${dur}</div>
-        </div>
-        <span class="badge ${bc}">${bl}</span>
-        <a href="${r.html_url}" target="_blank" class="history-link">Logs →</a>
-      </div>`;
+    if(!resp.ok) throw new Error(`API ${resp.status}`);
+    const data=await resp.json();
+    const sevenAgo=new Date(Date.now()-7*24*60*60*1000);
+    const runs=(data.workflow_runs||[]).filter(r=>new Date(r.created_at)>sevenAgo);
+    if(!runs.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">📅</div>No runs in last 7 days.</div>';return;}
+    list.innerHTML=runs.map(r=>{
+      const start=new Date(r.created_at);
+      const dur=r.updated_at&&r.conclusion?Math.round((new Date(r.updated_at)-start)/1000)+'s':'—';
+      const con=r.conclusion||r.status;
+      const icon=con==='success'?'✅':con==='failure'?'❌':con==='in_progress'?'⏳':'⚪';
+      const bc=con==='success'?'badge-success':con==='failure'?'badge-fail':'badge-running';
+      const bl=con==='success'?'Success':con==='failure'?'Failed':con==='in_progress'?'Running':'Queued';
+      const trig=r.event==='schedule'?'🕐 Scheduled':r.event==='workflow_dispatch'?'👆 Manual':'⚡ Push';
+      return`<div class="history-item"><div style="font-size:20px;flex-shrink:0;">${icon}</div><div class="history-info"><div class="history-name">${start.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'})} · ${start.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST</div><div class="history-time">${trig} · Duration: ${dur}</div></div><span class="badge ${bc}">${bl}</span><a href="${r.html_url}" target="_blank" class="history-link">Logs →</a></div>`;
     }).join('');
-  } catch(e) {
-    list.innerHTML=`<div class="history-empty">❌ ${e.message}</div>`;
-  }
+  }catch(e){list.innerHTML=`<div class="empty-state"><div class="empty-icon">❌</div>${e.message}</div>`;}
 }
 
-// ══════════════════════════════════════════════════
-// NAVIGATION + CLOCK
-// ══════════════════════════════════════════════════
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function showSyncBar(page,type,msg){
+  const el=document.getElementById(`${page}-sync-bar`);
+  el.className=`sync-bar ${type==='syncing'?'syncing':type==='error'?'error':''}`;
+  el.style.display='flex';el.textContent=msg;
+  if(type!=='syncing') setTimeout(()=>el.style.display='none',4000);
+}
+
 function showPage(page,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
   el.classList.add('active');
   if(page==='history') loadHistory();
+  if(page==='emails') loadSentEmails();
+  if(page==='sources') renderSources();
+  if(page==='recipients') renderRecipients();
 }
 
 function startClock(){
   const tick=()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  tick(); setInterval(tick,1000);
+  tick();setInterval(tick,1000);
 }
 
 function toast(msg,type='success'){
   const el=document.createElement('div');
   el.className=`toast ${type}`;
-  el.innerHTML=`<span>${type==='success'?'✅':type==='info'?'ℹ️':'❌'}</span><span>${msg}</span>`;
+  el.innerHTML=`<span>${type==='success'?'✅':'❌'}</span><span>${msg}</span>`;
   document.getElementById('toasts').appendChild(el);
   setTimeout(()=>{el.style.animation='slide-out 0.3s ease forwards';setTimeout(()=>el.remove(),300);},4000);
 }
