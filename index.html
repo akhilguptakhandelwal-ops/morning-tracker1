@@ -365,9 +365,19 @@ function parseSources(content){
   const sources=[];
   const block=content.match(/sources_seed\s*=\s*\[([\s\S]*?)\]/);
   if(!block) return sources;
-  const re=/\(\s*"(youtube|website)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"(?:\s*,\s*"([^"]+)")?\s*\)/g;
-  let m;
-  while((m=re.exec(block[1]))!==null) sources.push({type:m[1],name:m[2],url:m[3],category:m[4]||'General'});
+  const tupleRe=/\(([\s\S]*?)\)/g;
+  let tupleMatch;
+  while((tupleMatch=tupleRe.exec(block[1]))!==null){
+    const values=[...tupleMatch[1].matchAll(/"([^"]+)"/g)].map(m=>m[1]);
+    if(values.length>=3){
+      sources.push({
+        type:values[0],
+        name:values[1],
+        url:values[2],
+        category:values[3]||'General'
+      });
+    }
+  }
   return sources;
 }
 function parseRecipients(content){
