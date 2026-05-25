@@ -50,6 +50,7 @@ def init_db():
                 type TEXT NOT NULL CHECK(type IN ('youtube','website')),
                 name TEXT NOT NULL,
                 identifier TEXT NOT NULL UNIQUE,
+                category TEXT NOT NULL DEFAULT 'General',
                 last_scraped_id TEXT DEFAULT NULL,
                 active INTEGER NOT NULL DEFAULT 1
             );
@@ -65,13 +66,14 @@ def init_db():
                 "youtube",
                 "Aishwarya Srinivasan - AI with Aish",
                 "https://www.youtube.com/feeds/videos.xml?channel_id=UCzd4ZN716evEjtbJERBMTfg",
+                "AI",
             ),
-            ("website", "Taxguru", "https://taxguru.in"),
+            ("website", "Taxguru", "https://taxguru.in", "Finance & Taxation"),
         ]
-        for src_type, name, identifier in sources_seed:
+        for src_type, name, identifier, category in sources_seed:
             conn.execute(
-                "INSERT OR IGNORE INTO sources (type, name, identifier) VALUES (?,?,?)",
-                (src_type, name, identifier),
+                "INSERT OR IGNORE INTO sources (type, name, identifier, category) VALUES (?,?,?,?)",
+                (src_type, name, identifier, category),
             )
 
         for email in ("gupta_akhil@ymail.com",):
@@ -303,7 +305,7 @@ EMAIL_CSS = """<style>
 </style>"""
 
 
-def build_html_email(reports, skipped, run_date):
+def build_html_email(digest_name, reports, skipped, run_date):
     cards = ""
 
     for report in reports:
@@ -327,7 +329,7 @@ def build_html_email(reports, skipped, run_date):
 
     return f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">{EMAIL_CSS}</head><body>
 <div class="wrapper">
-  <div class="header"><h1>Morning Intelligence Digest</h1><p>{run_date} | Morning Intelligence Tracker</p></div>
+  <div class="header"><h1>{digest_name} Digest</h1><p>{run_date} | Morning Intelligence Tracker</p></div>
   {cards}
   <div class="footer">Built by Morning Intelligence Tracker</div>
 </div></body></html>"""
@@ -381,9 +383,7 @@ def run():
     init_db()
     now = datetime.now()
     run_date = now.strftime("%A, %d %B %Y")
-    reports = []
-    skipped = []
-    errors = []
+    digest_buckets = {}
 
     scrapers = {"youtube": scrape_youtube, "website": scrape_website}
 
@@ -398,8 +398,14 @@ def run():
             src_type = source["type"]
             src_name = source["name"]
             src_url = source["identifier"]
+            src_category = source["category"] or "General"
             last_id = source["last_scraped_id"]
             log.info("Processing [%s] %s", src_type.upper(), src_name)
+
+            bucket = digest_buckets.setdefault(
+                src_category,
+                {"reports": [], "skipped": [], "errors": []},
+            )
 
             scraper = scrapers.get(src_type)
             if not scraper:
@@ -407,17 +413,17 @@ def run():
 
             result = scraper(src_url)
             if not result:
-                errors.append(src_name)
+                bucket["errors"].append(src_name)
                 continue
 
             content_id = result["id"]
             if content_id == last_id:
                 log.info("No new content for '%s' - adding no-update card.", src_name)
-                skipped.append({"name": src_name, "url": result["url"]})
+                bucket["skipped"].append({"name": src_name, "url": result["url"]})
                 continue
 
             summary_html = summarise_with_gemini(src_name, result["raw_text"])
-            reports.append(
+            bucket["reports"].append(
                 {
                     "source_type": src_type,
                     "source_name": src_name,
@@ -428,32 +434,40 @@ def run():
             )
             update_last_scraped(conn, src_id, content_id)
 
-    log.info(
-        "Sending digest - %d new, %d no-update, %d errors",
-        len(reports),
-        len(skipped),
-        len(errors),
-    )
-    subject = f"Morning Intelligence Digest - {run_date}"
-    html_body = build_html_email(reports, skipped, run_date)
-    success = send_via_apps_script(recipients, html_body, subject)
+    all_success = True
+    for digest_name, bucket in digest_buckets.items():
+        reports = bucket["reports"]
+        skipped = bucket["skipped"]
+        errors = bucket["errors"]
+        log.info(
+            "Sending digest [%s] - %d new, %d no-update, %d errors",
+            digest_name,
+            len(reports),
+            len(skipped),
+            len(errors),
+        )
+        subject = f"{digest_name} Digest - {run_date}"
+        html_body = build_html_email(digest_name, reports, skipped, run_date)
+        success = send_via_apps_script(recipients, html_body, subject)
+        all_success = all_success and success
 
-    save_sent_log(
-        {
-            "timestamp": now.isoformat(),
-            "date": run_date,
-            "subject": subject,
-            "recipients": recipients,
-            "new_sources": [r["source_name"] for r in reports],
-            "no_update": [s["name"] for s in skipped],
-            "errors": errors,
-            "sent": success,
-            "report_count": len(reports),
-            "html_body": html_body,
-        }
-    )
+        save_sent_log(
+            {
+                "timestamp": now.isoformat(),
+                "date": run_date,
+                "subject": subject,
+                "digest_name": digest_name,
+                "recipients": recipients,
+                "new_sources": [r["source_name"] for r in reports],
+                "no_update": [s["name"] for s in skipped],
+                "errors": errors,
+                "sent": success,
+                "report_count": len(reports),
+                "html_body": html_body,
+            }
+        )
 
-    if not success:
+    if not all_success:
         raise RuntimeError(
             "Digest delivery failed. Check GAS_WEBHOOK_URL, GAS_SECRET_TOKEN, and the Apps Script deployment."
         )

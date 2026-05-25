@@ -268,6 +268,7 @@
           <div class="form-row">
             <div class="form-group"><label class="field-label">Source Name</label><input type="text" id="src-name" placeholder="e.g. TaxGuru"></div>
             <div class="form-group"><label class="field-label">Type</label><select id="src-type"><option value="youtube">YouTube</option><option value="website">Website</option></select></div>
+            <div class="form-group"><label class="field-label">Digest Category</label><input type="text" id="src-category" placeholder="e.g. Finance &amp; Taxation"></div>
             <div class="form-group full"><label class="field-label">URL</label><input type="text" id="src-url" placeholder="https://taxguru.in  or  youtube.com/feeds/videos.xml?channel_id=..."></div>
           </div>
           <button class="btn btn-success" onclick="addSourceLive()">➕ Add &amp; Save to GitHub</button>
@@ -358,9 +359,9 @@ function parseSources(content){
   const sources=[];
   const block=content.match(/sources_seed\s*=\s*\[([\s\S]*?)\]/);
   if(!block) return sources;
-  const re=/\(\s*"(youtube|website)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)/g;
+  const re=/\(\s*"(youtube|website)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"(?:\s*,\s*"([^"]+)")?\s*\)/g;
   let m;
-  while((m=re.exec(block[1]))!==null) sources.push({type:m[1],name:m[2],url:m[3]});
+  while((m=re.exec(block[1]))!==null) sources.push({type:m[1],name:m[2],url:m[3],category:m[4]||'General'});
   return sources;
 }
 function parseRecipients(content){
@@ -371,7 +372,7 @@ function parseRecipients(content){
   return out;
 }
 function rebuildSources(content,sources){
-  const lines=sources.map(s=>`            ("${s.type}", "${s.name}",\n             "${s.url}"),`).join('\n');
+  const lines=sources.map(s=>`            ("${s.type}", "${s.name}",\n             "${s.url}", "${s.category||'General'}"),`).join('\n');
   return content.replace(/sources_seed\s*=\s*\[[\s\S]*?\]/,`sources_seed = [\n${lines}\n        ]`);
 }
 function rebuildRecipients(content,recipients){
@@ -417,7 +418,7 @@ function renderDashboard(){
   document.getElementById('stat-sources').textContent=cachedSources.length;
   document.getElementById('stat-recipients').textContent=cachedRecipients.length;
   document.getElementById('last-update').textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-  const srcHtml=cachedSources.map(s=>`<div class="card" style="margin-bottom:10px;"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">Active</span></div></div></div>`).join('');
+  const srcHtml=cachedSources.map(s=>`<div class="card" style="margin-bottom:10px;"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div><div style="font-size:11px;color:var(--text-dim);margin-top:6px;">Digest: ${s.category||'General'}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">${s.category||'General'}</span></div></div></div>`).join('');
   const recHtml=cachedRecipients.map(e=>`<div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;"><span style="font-size:18px;">📧</span><span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${e}</span><span class="badge badge-on">Subscribed</span></div>`).join('');
   document.getElementById('dash-content').innerHTML=`
     <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Active Feeds</div>${srcHtml}
@@ -514,20 +515,20 @@ function toggleEmail(i){
 function renderSources(){
   const el=document.getElementById('sources-list');
   if(!cachedSources.length){el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No sources found.</div>';return;}
-  el.innerHTML=cachedSources.map((s,i)=>`<div class="card"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">Active</span><button class="btn btn-sm btn-danger" onclick="removeSourceLive(${i})">🗑 Remove</button></div></div></div>`).join('');
+  el.innerHTML=cachedSources.map((s,i)=>`<div class="card"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div><div style="font-size:11px;color:var(--text-dim);margin-top:6px;">Digest: ${s.category||'General'}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">${s.category||'General'}</span><button class="btn btn-sm btn-danger" onclick="removeSourceLive(${i})">🗑 Remove</button></div></div></div>`).join('');
 }
 
 async function addSourceLive(){
   if(!getToken()){toast('GitHub token required.','error');return;}
-  const name=document.getElementById('src-name').value.trim(),type=document.getElementById('src-type').value,url=document.getElementById('src-url').value.trim();
+  const name=document.getElementById('src-name').value.trim(),type=document.getElementById('src-type').value,category=(document.getElementById('src-category').value.trim()||'General'),url=document.getElementById('src-url').value.trim();
   if(!name||!url){toast('Name and URL required.','error');return;}
   if(cachedSources.find(s=>s.url===url)){toast('URL already exists.','error');return;}
   showSyncBar('sources','syncing','⏳ Saving to GitHub...');
   try{
     const{content,sha}=await fetchFile(FILE);
-    cachedSources.push({type,name,url});
+    cachedSources.push({type,name,url,category});
     await pushFile(FILE,rebuildSources(content,cachedSources),sha,`Dashboard: add source "${name}"`);
-    ['src-name','src-url'].forEach(id=>document.getElementById(id).value='');
+    ['src-name','src-category','src-url'].forEach(id=>document.getElementById(id).value='');
     renderSources();renderDashboard();
     showSyncBar('sources','success','✅ Saved to GitHub! Takes effect on next run.');
     toast(`"${name}" added and saved ✅`,'success');
