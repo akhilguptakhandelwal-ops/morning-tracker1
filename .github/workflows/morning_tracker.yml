@@ -1,0 +1,51 @@
+name: 🌅 Morning Intelligence Tracker
+
+on:
+  schedule:
+    # 7:00 AM IST = 1:30 AM UTC  (IST is UTC+5:30)
+    - cron: '30 1 * * *'
+
+  # Lets you trigger manually from GitHub UI anytime
+  workflow_dispatch:
+
+jobs:
+  run-tracker:
+    name: Scrape → Summarise → Email
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      # Restore SQLite DB from previous run so state is preserved
+      - name: 💾 Restore tracker database cache
+        uses: actions/cache@v4
+        with:
+          path: tracker.db
+          key: tracker-db-${{ runner.os }}
+          restore-keys: tracker-db-
+
+      - name: 🐍 Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: 📦 Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: 🚀 Run Morning Intelligence Tracker
+        env:
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          GAS_WEBHOOK_URL:   ${{ secrets.GAS_WEBHOOK_URL }}
+          GAS_SECRET_TOKEN:  ${{ secrets.GAS_SECRET_TOKEN }}
+        run: python morning_tracker.py
+
+      # Save the updated DB back to cache for tomorrow's run
+      - name: 💾 Save tracker database cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: tracker.db
+          key: tracker-db-${{ runner.os }}
