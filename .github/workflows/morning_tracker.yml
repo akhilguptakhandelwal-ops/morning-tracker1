@@ -13,6 +13,8 @@ jobs:
     name: Scrape → Summarise → Email
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write   # needed to commit sent_log.json back to repo
 
     steps:
       - name: 📥 Checkout repository
@@ -32,3 +34,11 @@ jobs:
           GAS_WEBHOOK_URL:   ${{ secrets.GAS_WEBHOOK_URL }}
           GAS_SECRET_TOKEN:  ${{ secrets.GAS_SECRET_TOKEN }}
         run: python morning_tracker.py
+
+      - name: 💾 Commit sent_log.json back to repo
+        run: |
+          git config user.name  "Morning Tracker Bot"
+          git config user.email "bot@morning-tracker"
+          git add sent_log.json || true
+          git diff --staged --quiet || git commit -m "📨 Update sent email log [$(date +'%Y-%m-%d %H:%M')]"
+          git push || true
