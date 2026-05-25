@@ -43,8 +43,12 @@ def init_db():
             );
         """)
         sources_seed = [
-            ("youtube", "Fintex Pro", "https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ"),
-            ("website", "Income Tax India", "https://incometaxindia.gov.in"),
+            ("youtube", "Fintex Pro",
+             "https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ"),
+            ("website", "Income Tax India",
+             "https://incometaxindia.gov.in"),
+            ("youtube", "Taxguru",
+             "https://taxguru.in"),
         ]
         for src_type, name, identifier in sources_seed:
             conn.execute("INSERT OR IGNORE INTO sources (type, name, identifier) VALUES (?,?,?)", (src_type, name, identifier))
