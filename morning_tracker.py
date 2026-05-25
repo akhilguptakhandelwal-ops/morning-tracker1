@@ -62,10 +62,19 @@ def init_db():
         )
 
         sources_seed = [
-            ("website", "Taxguru",
-             "https://taxguru.in"),
-            ("youtube", "FinTaxPro",
-             "https://www.youtube.com/feeds/videos.xml?channel_id=UCrzxy3Ij6P-SNVNbK1Z7Xzw"),
+            ("website", "Taxguru", "https://taxguru.in", "Accounts and Taxation"),
+            (
+                "youtube",
+                "FinTaxPro",
+                "https://www.youtube.com/feeds/videos.xml?channel_id=UCrzxy3Ij6P-SNVNbK1Z7Xzw",
+                "Accounts and Taxation",
+            ),
+            (
+                "youtube",
+                "Aishwarya Srinivasan - AI with Aish",
+                "https://www.youtube.com/feeds/videos.xml?channel_id=UCzd4ZN716evEjtbJERBMTfg",
+                "AI",
+            ),
         ]
         for source_seed in sources_seed:
             if len(source_seed) == 4:
