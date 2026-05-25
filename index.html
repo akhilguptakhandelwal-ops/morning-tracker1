@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Intelligence Tracker — Control Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d1117;
+    --surface: #111827;
+    --card: #161f2e;
+    --border: #1e2d42;
+    --accent: #3b82f6;
+    --accent2: #06b6d4;
+    --green: #10b981;
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --muted: #4b5563;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --glow: rgba(59,130,246,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ink);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background grid ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--ink);
+  }
+
+  .login-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px 44px;
+    width: 380px;
+    box-shadow: 0 0 80px rgba(59,130,246,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .login-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .login-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+  }
+
+  .field-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  input[type="password"], input[type="text"], input[type="email"], select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 20px;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--glow);
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .3px;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    width: 100%;
+    justify-content: center;
+  }
+  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+
+  .btn-sm {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
+  .btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+  .btn-danger:hover { background: rgba(239,68,68,0.25); }
+
+  .btn-success { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+  .btn-success:hover { background: rgba(16,185,129,0.25); }
+
+  .btn-ghost { background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+
+  .error-msg {
+    color: var(--red);
+    font-size: 13px;
+    margin-top: -12px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  /* ── MAIN APP ── */
+  #app { display: none; position: relative; z-index: 1; }
+
+  .topbar {
+    height: 60px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 32px;
+    gap: 16px;
+    background: rgba(17,24,39,0.8);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 50;
+  }
+
+  .topbar-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+
+  .topbar-sep { width: 1px; height: 20px; background: var(--border); }
+
+  .topbar-title {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%,100% { opacity:1; } 50% { opacity:.4; }
+  }
+
+  .topbar-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 60px);
+  }
+
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    background: rgba(22,31,46,0.5);
+  }
+
+  .sidebar-section {
+    padding: 0 16px;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 12px;
+    margin-bottom: 4px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .nav-item.active { background: var(--glow); color: var(--accent); border: 1px solid rgba(59,130,246,0.2); }
+
+  .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .content { padding: 32px; overflow-y: auto; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-header { margin-bottom: 28px; }
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .page-sub { font-size: 13px; color: var(--text-dim); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .card-top {
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-info { display: flex; flex-direction: column; gap: 2px; }
+
+  .card-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .card-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .card-meta {
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+  }
+
+  .badge-yt { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  .badge-web { background: rgba(6,182,212,0.15); color: #67e8f9; border: 1px solid rgba(6,182,212,0.2); }
+  .badge-on { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+  .badge-off { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.2); }
+
+  .meta-item { font-size: 12px; color: var(--text-dim); }
+  .meta-key { color: var(--muted); font-size: 11px; }
+
+  .actions { display: flex; gap: 8px; }
+
+  /* ── FORM PANEL ── */
+  .form-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .form-panel h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { margin-bottom: 0; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  select option { background: var(--surface); }
+
+  /* ── STATS ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  }
+
+  .stat-card.blue::after { background: linear-gradient(90deg, var(--accent), transparent); }
+  .stat-card.cyan::after { background: linear-gradient(90deg, var(--accent2), transparent); }
+  .stat-card.green::after { background: linear-gradient(90deg, var(--green), transparent); }
+  .stat-card.amber::after { background: linear-gradient(90deg, var(--amber), transparent); }
+
+  .stat-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .stat-value { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 32px; color: var(--text); }
+  .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+  /* ── SETUP PAGE ── */
+  .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .setup-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .setup-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .setup-card p { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 16px; }
+
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: #7dd3fc;
+    line-height: 1.8;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .cron-builder {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+
+  .cron-builder label { font-size: 12px; color: var(--text-dim); display: block; margin-bottom: 6px; }
+
+  .cron-result {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent2);
+    padding: 10px 14px;
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.2);
+    border-radius: 6px;
+    margin-top: 12px;
+  }
+
+  /* ── TOAST ── */
+  .toast-container {
+    position: fixed; bottom: 24px; right: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    z-index: 999;
+  }
+
+  .toast {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: slide-in 0.3s ease;
+    min-width: 260px;
+  }
+
+  @keyframes slide-in { from { transform: translateX(100%); opacity:0; } to { transform: translateX(0); opacity:1; } }
+  @keyframes slide-out { from { transform: translateX(0); opacity:1; } to { transform: translateX(120%); opacity:0; } }
+
+  .toast.success { border-left: 3px solid var(--green); }
+  .toast.error   { border-left: 3px solid var(--red); }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">MIT Control Panel</div>
+    <div class="login-title">Good morning, Akhil</div>
+    <div class="login-sub">Enter your access password to continue</div>
+    <div class="field-label">Password</div>
+    <input type="password" id="pw-input" placeholder="••••••••" autocomplete="current-password">
+    <div class="error-msg" id="pw-error">Incorrect password. Try again.</div>
+    <button class="btn btn-primary" onclick="doLogin()">
+      <span>🔓</span> Unlock Dashboard
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-logo">M.I.T</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-title">Morning Intelligence Tracker</div>
+    <div class="topbar-right">
+      <div class="status-dot"></div>
+      <div class="topbar-time" id="clock">--:--:--</div>
+      <button class="btn btn-sm btn-ghost" onclick="doLogout()">Lock 🔒</button>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div style="padding:0 16px 20px;border-bottom:1px solid var(--border);margin-bottom:16px;">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Welcome back</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;">Akhil Gupta</div>
+        <div style="font-size:12px;color:var(--text-dim);">Plant Finance Head · Safari Mfg</div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Overview</div>
+        <div class="nav-item active" onclick="showPage('dashboard',this)">
+          <span class="nav-icon">📊</span> Dashboard
+        </div>
+      </div>
+
+      <div class="sidebar-section" style="margin-top:8px;">
+        <div class="sidebar-label">Configuration</div>
+        <div class="nav-item" onclick="showPage('sources',this)">
+          <span class="nav-icon">📡</span> Sources
+        </div>
+        <div class="nav-item" onclick="showPage('recipients',this)">
+          <span class="nav-icon">📬</span> Recipients
+        </div>
+      </div>
+
+      <div class="sidebar-section" style="margin-top:8px;">
+        <div class="sidebar-label">Setup</div>
+        <div class="nav-item" onclick="showPage('setup',this)">
+          <span class="nav-icon">⚙️</span> Deployment Guide
+        </div>
+        <div class="nav-item" onclick="showPage('cron',this)">
+          <span class="nav-icon">⏰</span> Scheduler
+        </div>
+      </div>
+    </div>
+
+    <!-- Content area -->
+    <div class="content">
+
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub">System overview · Last updated: <span id="last-update">just now</span></div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-label">Total Sources</div>
+            <div class="stat-value" id="stat-sources">2</div>
+            <div class="stat-sub">Active data feeds</div>
+          </div>
+          <div class="stat-card cyan">
+            <div class="stat-label">Recipients</div>
+            <div class="stat-value" id="stat-recipients">2</div>
+            <div class="stat-sub">Subscribed emails</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">YouTube</div>
+            <div class="stat-value">1</div>
+            <div class="stat-sub">Channel feeds</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-label">Websites</div>
+            <div class="stat-value">1</div>
+            <div class="stat-sub">Monitored sites</div>
+          </div>
+        </div>
+
+        <!-- Sources preview -->
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">Active Feeds</div>
+
+        <div class="card">
+          <div class="card-top">
+            <div class="card-info">
+              <div class="card-name">Fintex Pro</div>
+              <div class="card-url">youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv...</div>
+            </div>
+            <div class="actions">
+              <span class="badge badge-yt">YouTube</span>
+              <span class="badge badge-on">Active</span>
+            </div>
+          </div>
+          <div class="card-meta">
+            <div class="meta-item"><span class="meta-key">State ID: </span><span style="font-family:'DM Mono',monospace">Not yet tracked</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-top">
+            <div class="card-info">
+              <div class="card-name">Income Tax India</div>
+              <div class="card-url">incometaxindia.gov.in</div>
+            </div>
+            <div class="actions">
+              <span class="badge badge-web">Website</span>
+              <span class="badge badge-on">Active</span>
+            </div>
+          </div>
+          <div class="card-meta">
+            <div class="meta-item"><span class="meta-key">State ID: </span><span style="font-family:'DM Mono',monospace">Not yet tracked</span></div>
+          </div>
+        </div>
+
+        <!-- Recipient preview -->
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin:24px 0 16px;">Digest Recipients</div>
+        <div style="display:flex;flex-direction:column;gap:10px;" id="dash-recipients">
+          <div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:12px;">
+            <span style="font-size:18px;">📧</span>
+            <span style="font-family:'DM Mono',monospace;font-size:13px;">gupta_akhil@ymail.com</span>
+            <span class="badge badge-on" style="margin-left:auto;">Subscribed</span>
+          </div>
+          <div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:12px;">
+            <span style="font-size:18px;">📧</span>
+            <span style="font-family:'DM Mono',monospace;font-size:13px;">akhilgupta.khandelwal@gmail.com</span>
+            <span class="badge badge-on" style="margin-left:auto;">Subscribed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOURCES PAGE -->
+      <div class="page" id="page-sources">
+        <div class="page-header">
+          <div class="page-title">Content Sources</div>
+          <div class="page-sub">Add, remove, or toggle your intelligence feeds</div>
+        </div>
+
+        <div class="form-panel">
+          <h3>➕ Add New Source</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="field-label">Source Name</div>
+              <input type="text" id="src-name" placeholder="e.g. CA Club India">
+            </div>
+            <div class="form-group">
+              <div class="field-label">Type</div>
+              <select id="src-type">
+                <option value="youtube">YouTube</option>
+                <option value="website">Website</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <div class="field-label">URL / Identifier</div>
+              <input type="text" id="src-url" placeholder="https://www.youtube.com/feeds/videos.xml?channel_id=...">
+            </div>
+          </div>
+          <button class="btn btn-success" onclick="addSource()">Add Source</button>
+        </div>
+
+        <div id="sources-list"></div>
+      </div>
+
+      <!-- RECIPIENTS PAGE -->
+      <div class="page" id="page-recipients">
+        <div class="page-header">
+          <div class="page-title">Email Recipients</div>
+          <div class="page-sub">Manage who receives the morning digest</div>
+        </div>
+
+        <div class="form-panel">
+          <h3>➕ Add Recipient</h3>
+          <div style="display:flex;gap:12px;align-items:flex-end;">
+            <div style="flex:1">
+              <div class="field-label">Email Address</div>
+              <input type="email" id="rec-email" placeholder="colleague@company.com" style="margin-bottom:0">
+            </div>
+            <button class="btn btn-success" onclick="addRecipient()" style="margin-bottom:0;white-space:nowrap;">Add Recipient</button>
+          </div>
+        </div>
+
+        <div id="recipients-list"></div>
+      </div>
+
+      <!-- SETUP PAGE -->
+      <div class="page" id="page-setup">
+        <div class="page-header">
+          <div class="page-title">Deployment Guide</div>
+          <div class="page-sub">Everything you need to run this on your machine</div>
+        </div>
+
+        <div class="setup-grid">
+          <div class="setup-card">
+            <h3>1. Install Dependencies</h3>
+            <p>Run this once in your project directory to install all required Python packages.</p>
+            <div class="code-block">pip install -r requirements.txt</div>
+          </div>
+
+          <div class="setup-card">
+            <h3>2. Configure Environment</h3>
+            <p>Copy the template and fill in your Gemini API key and Gmail credentials.</p>
+            <div class="code-block">cp .env.template .env
+# Then edit .env with your values
+source .env</div>
+          </div>
+
+          <div class="setup-card">
+            <h3>3. Required Environment Variables</h3>
+            <p>Set these before running the script. Never commit them to git.</p>
+            <div class="code-block">GEMINI_API_KEY=...     # from aistudio.google.com
+SENDER_EMAIL=...      # Gmail address
+SENDER_PASSWORD=...   # 16-char App Password</div>
+          </div>
+
+          <div class="setup-card">
+            <h3>4. Run the Tracker</h3>
+            <p>Execute directly or let the scheduler handle it daily.</p>
+            <div class="code-block">python morning_tracker.py
+
+# Management CLI
+python manage.py list-sources
+python manage.py list-recipients
+python manage.py reset-all-state</div>
+          </div>
+
+          <div class="setup-card" style="grid-column:1/-1">
+            <h3>5. Gmail App Password Setup</h3>
+            <p>Standard Gmail password won't work. You need a 16-character App Password:</p>
+            <div class="code-block">1. Go to myaccount.google.com
+2. Security → 2-Step Verification (enable if not already)
+3. Security → App passwords
+4. Select app: Mail  |  Device: Other (Morning Tracker)
+5. Copy the 16-char password → paste into SENDER_PASSWORD</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRON PAGE -->
+      <div class="page" id="page-cron">
+        <div class="page-header">
+          <div class="page-title">Scheduler Builder</div>
+          <div class="page-sub">Generate the right cron expression for your daily brief</div>
+        </div>
+
+        <div class="setup-grid">
+          <div class="setup-card">
+            <h3>⚙️ Build Your Schedule</h3>
+            <p>Configure when the tracker should run every day.</p>
+            <div class="cron-builder">
+              <label>Hour (IST 24h format)</label>
+              <select id="cron-hour" onchange="updateCron()" style="margin-bottom:12px;">
+                <option value="6">6:00 AM</option>
+                <option value="7" selected>7:00 AM</option>
+                <option value="8">8:00 AM</option>
+                <option value="9">9:00 AM</option>
+                <option value="10">10:00 AM</option>
+              </select>
+              <label>Minute</label>
+              <select id="cron-min" onchange="updateCron()" style="margin-bottom:12px;">
+                <option value="0" selected>:00</option>
+                <option value="15">:15</option>
+                <option value="30">:30</option>
+                <option value="45">:45</option>
+              </select>
+              <div class="cron-result" id="cron-output">0 7 * * * cd /path/to/project && source .env && python morning_tracker.py >> logs/tracker.log 2>&1</div>
+            </div>
+          </div>
+
+          <div class="setup-card">
+            <h3>📋 Add to Crontab</h3>
+            <p>Open your crontab editor and paste the generated expression.</p>
+            <div class="code-block"># Open crontab editor
+crontab -e
+
+# Paste the generated line above
+# Save and exit (Ctrl+X in nano)
+
+# Verify it's registered
+crontab -l</div>
+          </div>
+
+          <div class="setup-card" style="grid-column:1/-1">
+            <h3>🪟 Windows Task Scheduler (Alternative)</h3>
+            <p>On Windows, use Task Scheduler instead of cron.</p>
+            <div class="code-block"># Create a .bat file (run_tracker.bat)
+@echo off
+cd C:\path\to\morning_tracker
+set GEMINI_API_KEY=your_key_here
+set SENDER_EMAIL=your@gmail.com
+set SENDER_PASSWORD=your_app_password
+python morning_tracker.py >> logs\tracker.log 2>&1
+
+# In Task Scheduler:
+# Action: Start a program → python.exe
+# Arguments: morning_tracker.py
+# Start in: C:\path\to\morning_tracker
+# Trigger: Daily at 7:00 AM</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main-grid -->
+</div><!-- /app -->
+
+<!-- Toasts -->
+<div class="toast-container" id="toasts"></div>
+
+<script>
+// ── AUTH ──────────────────────────────────────────────
+const PASS_HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // "password"
+// SHA-256 of "MIT2024!" — change this to your desired password hash
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  const hash = await sha256(pw);
+  if (hash === PASS_HASH) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    sessionStorage.setItem('mit_auth', '1');
+    startClock();
+  } else {
+    const err = document.getElementById('pw-error');
+    err.style.display = 'block';
+    document.getElementById('pw-input').style.borderColor = 'var(--red)';
+    setTimeout(() => {
+      err.style.display = 'none';
+      document.getElementById('pw-input').style.borderColor = 'var(--border)';
+    }, 3000);
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('mit_auth');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+}
+
+document.getElementById('pw-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// Auto-restore session
+if (sessionStorage.getItem('mit_auth')) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  startClock();
+}
+
+// ── CLOCK ────────────────────────────────────────────
+function startClock() {
+  function tick() {
+    document.getElementById('clock').textContent =
+      new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+  tick();
+  setInterval(tick, 1000);
+  document.getElementById('last-update').textContent =
+    new Date().toLocaleString('en-IN', {dateStyle:'medium', timeStyle:'short'});
+}
+
+// ── NAVIGATION ───────────────────────────────────────
+function showPage(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  el.classList.add('active');
+  if (page === 'sources') renderSources();
+  if (page === 'recipients') renderRecipients();
+}
+
+// ── DATA STORE ───────────────────────────────────────
+let sources = [
+  { id:1, type:'youtube', name:'Fintex Pro', url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ', active:true, lastId:null },
+  { id:2, type:'website', name:'Income Tax India', url:'https://incometaxindia.gov.in', active:true, lastId:null },
+];
+
+let recipients = [
+  { id:1, email:'gupta_akhil@ymail.com' },
+  { id:2, email:'akhilgupta.khandelwal@gmail.com' },
+];
+
+let nextSrcId = 3;
+let nextRecId = 3;
+
+// ── SOURCES ──────────────────────────────────────────
+function renderSources() {
+  const el = document.getElementById('sources-list');
+  if (!sources.length) {
+    el.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:20px;">No sources configured.</div>';
+    return;
+  }
+  el.innerHTML = sources.map(s => `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-info">
+          <div class="card-name">${s.name}</div>
+          <div class="card-url">${s.url}</div>
+        </div>
+        <div class="actions">
+          <span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span>
+          <span class="badge ${s.active?'badge-on':'badge-off'}">${s.active?'Active':'Paused'}</span>
+          <button class="btn btn-sm btn-ghost" onclick="toggleSource(${s.id})">${s.active?'Pause':'Enable'}</button>
+          <button class="btn btn-sm btn-ghost" onclick="resetState(${s.id})" title="Reset last scraped ID">↺ Reset</button>
+          <button class="btn btn-sm btn-danger" onclick="removeSource(${s.id})">Remove</button>
+        </div>
+      </div>
+      <div class="card-meta">
+        <div class="meta-item"><span class="meta-key">Last State ID: </span>
+          <span style="font-family:'DM Mono',monospace">${s.lastId || 'Not yet tracked'}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  updateStats();
+}
+
+function addSource() {
+  const name = document.getElementById('src-name').value.trim();
+  const type = document.getElementById('src-type').value;
+  const url = document.getElementById('src-url').value.trim();
+  if (!name || !url) { toast('Name and URL are required.', 'error'); return; }
+  if (sources.find(s => s.url === url)) { toast('That URL already exists.', 'error'); return; }
+  sources.push({ id: nextSrcId++, type, name, url, active: true, lastId: null });
+  ['src-name','src-url'].forEach(id => document.getElementById(id).value = '');
+  renderSources();
+  toast(`Source "${name}" added ✅`, 'success');
+}
+
+function removeSource(id) {
+  sources = sources.filter(s => s.id !== id);
+  renderSources();
+  toast('Source removed.', 'success');
+}
+
+function toggleSource(id) {
+  const s = sources.find(s => s.id === id);
+  if (s) { s.active = !s.active; renderSources(); toast(`Source ${s.active?'enabled':'paused'}.`, 'success'); }
+}
+
+function resetState(id) {
+  const s = sources.find(s => s.id === id);
+  if (s) { s.lastId = null; renderSources(); toast(`State reset for "${s.name}".`, 'success'); }
+}
+
+// ── RECIPIENTS ───────────────────────────────────────
+function renderRecipients() {
+  const el = document.getElementById('recipients-list');
+  if (!recipients.length) {
+    el.innerHTML = '<div style="color:var(--text-dim);font-size:13px;padding:20px;">No recipients configured.</div>';
+    return;
+  }
+  el.innerHTML = recipients.map(r => `
+    <div class="card" style="padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+      <span style="font-size:20px;">📧</span>
+      <span style="font-family:'DM Mono',monospace;font-size:13px;flex:1;">${r.email}</span>
+      <span class="badge badge-on">Subscribed</span>
+      <button class="btn btn-sm btn-danger" onclick="removeRecipient(${r.id})">Remove</button>
+    </div>
+  `).join('');
+  updateStats();
+}
+
+function addRecipient() {
+  const email = document.getElementById('rec-email').value.trim();
+  if (!email || !email.includes('@')) { toast('Enter a valid email address.', 'error'); return; }
+  if (recipients.find(r => r.email === email)) { toast('That email is already subscribed.', 'error'); return; }
+  recipients.push({ id: nextRecId++, email });
+  document.getElementById('rec-email').value = '';
+  renderRecipients();
+  toast(`${email} subscribed ✅`, 'success');
+}
+
+function removeRecipient(id) {
+  const r = recipients.find(r => r.id === id);
+  recipients = recipients.filter(r => r.id !== id);
+  renderRecipients();
+  toast(`${r.email} removed.`, 'success');
+}
+
+// ── STATS ────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('stat-sources').textContent = sources.filter(s=>s.active).length;
+  document.getElementById('stat-recipients').textContent = recipients.length;
+}
+
+// ── CRON ─────────────────────────────────────────────
+function updateCron() {
+  const h = document.getElementById('cron-hour').value;
+  const m = document.getElementById('cron-min').value;
+  document.getElementById('cron-output').textContent =
+    `${m} ${h} * * * cd /path/to/morning_tracker && source .env && python morning_tracker.py >> logs/tracker.log 2>&1`;
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function toast(msg, type='success') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${type==='success'?'✅':'❌'}</span><span>${msg}</span>`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => {
+    el.style.animation = 'slide-out 0.3s ease forwards';
+    setTimeout(() => el.remove(), 300);
+  }, 3500);
+}
+</script>
+</body>
+</html>
