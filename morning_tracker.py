@@ -43,8 +43,8 @@ def init_db():
             );
         """)
         sources_seed = [
-            ("youtube", "Fintex Pro",
-             "https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ"),
+            ("youtube", "Aishwarya Srinivasan - AI with Aish",
+            "https://www.youtube.com/feeds/videos.xml?channel_id=UCzd4ZN716evEjtbJERBMTfg"),
             ("youtube", "Taxguru",
              "https://taxguru.in"),
         ]
