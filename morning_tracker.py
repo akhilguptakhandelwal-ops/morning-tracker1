@@ -67,7 +67,14 @@ def init_db():
             ("youtube", "FinTaxPro",
              "https://www.youtube.com/feeds/videos.xml?channel_id=UCrzxy3Ij6P-SNVNbK1Z7Xzw"),
         ]
-        for src_type, name, identifier, category in sources_seed:
+        for source_seed in sources_seed:
+            if len(source_seed) == 4:
+                src_type, name, identifier, category = source_seed
+            elif len(source_seed) == 3:
+                src_type, name, identifier = source_seed
+                category = "General"
+            else:
+                raise ValueError(f"Invalid source seed entry: {source_seed!r}")
             conn.execute(
                 "INSERT OR IGNORE INTO sources (type, name, identifier, category) VALUES (?,?,?,?)",
                 (src_type, name, identifier, category),
