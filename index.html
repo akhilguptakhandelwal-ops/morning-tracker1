@@ -412,12 +412,21 @@ function renderDashboard(){
 }
 
 // ── SENT EMAILS ───────────────────────────────────────────────────────────────
+function escapeHtmlAttr(v){
+  return String(v||'')
+    .replace(/&/g,'&amp;')
+    .replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
 async function loadSentEmails(){
   const el=document.getElementById('emails-list');
   el.innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div>Loading sent email log...</div>';
   try{
     const{content}=await fetchFile(LOG_FILE);
     const logs=JSON.parse(content);
+    window.sentEmailLogs=logs;
     document.getElementById('stat-emails').textContent=logs.length;
     if(!logs.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📭</div>No emails sent yet. Run the tracker to send your first digest.</div>';return;}
     el.innerHTML=logs.map((entry,i)=>{
@@ -460,7 +469,32 @@ async function loadSentEmails(){
 
 function toggleEmail(i){
   const body=document.getElementById(`email-body-${i}`);
+  const willOpen=!body.classList.contains('open');
   body.classList.toggle('open');
+  if(!willOpen)return;
+
+  if(body.querySelector('.email-preview-wrap'))return;
+  const entry=(window.sentEmailLogs||[])[i]||{};
+  const preview=document.createElement('div');
+  preview.className='email-preview-wrap';
+  preview.style.marginTop='16px';
+  preview.style.border='1px solid var(--border)';
+  preview.style.borderRadius='12px';
+  preview.style.overflow='hidden';
+  preview.style.background='#fff';
+  if(entry.html_body){
+    const frame=document.createElement('iframe');
+    frame.title='Sent email preview';
+    frame.style.width='100%';
+    frame.style.minHeight='720px';
+    frame.style.border='0';
+    frame.style.background='#fff';
+    frame.srcdoc=entry.html_body;
+    preview.appendChild(frame);
+  }else{
+    preview.innerHTML='<div style="padding:18px;color:var(--text-dim);font-size:13px;">Email preview not available for this older log entry.</div>';
+  }
+  body.appendChild(preview);
 }
 
 // ── SOURCES LIVE EDIT ─────────────────────────────────────────────────────────

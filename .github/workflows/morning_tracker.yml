@@ -31,6 +31,16 @@ jobs:
       - name: Remove old tracker database
         run: rm -f tracker.db
 
+      - name: Validate required secrets
+        env:
+          GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+          GAS_WEBHOOK_URL:   ${{ secrets.GAS_WEBHOOK_URL }}
+          GAS_SECRET_TOKEN:  ${{ secrets.GAS_SECRET_TOKEN }}
+        run: |
+          test -n "$GEMINI_API_KEY" || (echo "GEMINI_API_KEY secret is missing" && exit 1)
+          test -n "$GAS_WEBHOOK_URL" || (echo "GAS_WEBHOOK_URL secret is missing" && exit 1)
+          test -n "$GAS_SECRET_TOKEN" || (echo "GAS_SECRET_TOKEN secret is missing" && exit 1)
+
       - name: 🚀 Run Morning Intelligence Tracker
         env:
           GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}

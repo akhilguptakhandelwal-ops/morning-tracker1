@@ -230,7 +230,7 @@ SYSTEM_INSTRUCTION = textwrap.dedent(
 def summarise_with_gemini(source_name, raw_text):
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        return '<div class="ai-summary"><p><em>GEMINI_API_KEY not configured.</em></p></div>'
+        raise RuntimeError("GEMINI_API_KEY not configured.")
 
     try:
         from google import genai
@@ -413,6 +413,7 @@ def run():
             "errors": errors,
             "sent": success,
             "report_count": len(reports),
+            "html_body": html_body,
         }
     )
 
