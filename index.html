@@ -146,6 +146,10 @@
     <input type="password" id="pw-input" placeholder="••••••••">
     <label class="field-label">GitHub Token <span style="color:var(--muted);font-size:10px;">(ghp_xxx — for live editing)</span></label>
     <input type="password" id="login-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+    <label style="display:flex;align-items:center;gap:8px;margin:-4px 0 14px;color:var(--text-dim);font-size:12px;">
+      <input type="checkbox" id="remember-token" checked style="width:auto;margin:0;">
+      Remember GitHub token on this device
+    </label>
     <div class="error-msg" id="pw-error">Incorrect password. Try again.</div>
     <button class="btn btn-primary" onclick="doLogin()">🔓 Unlock Dashboard</button>
   </div>
@@ -301,6 +305,8 @@ const FILE     = 'morning_tracker.py';
 const LOG_FILE = 'sent_log.json';
 const WORKFLOW = 'morning_tracker.yml';
 const PASS_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // "password"
+const TOKEN_KEY = 'mit_gh_token';
+const AUTH_KEY  = 'mit_auth';
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 async function sha256(msg){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
@@ -309,18 +315,25 @@ async function doLogin(){
   const pw=document.getElementById('pw-input').value;
   if(await sha256(pw)!==PASS_HASH){document.getElementById('pw-error').style.display='block';setTimeout(()=>document.getElementById('pw-error').style.display='none',3000);return;}
   const token=document.getElementById('login-token').value.trim();
-  if(token) sessionStorage.setItem('gh_token',token);
-  sessionStorage.setItem('mit_auth','1');
+  const remember=document.getElementById('remember-token').checked;
+  if(token){
+    sessionStorage.setItem('gh_token',token);
+    if(remember) localStorage.setItem(TOKEN_KEY,token);
+    else localStorage.removeItem(TOKEN_KEY);
+  }
+  sessionStorage.setItem(AUTH_KEY,'1');
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
   init();
 }
-function doLogout(){sessionStorage.clear();document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('pw-input').value='';document.getElementById('login-token').value='';}
+function doLogout(){sessionStorage.removeItem('gh_token');sessionStorage.removeItem(AUTH_KEY);document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('pw-input').value='';document.getElementById('login-token').value=localStorage.getItem(TOKEN_KEY)||'';document.getElementById('remember-token').checked=!!localStorage.getItem(TOKEN_KEY);}
 document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-if(sessionStorage.getItem('mit_auth')){document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';init();}
+const savedToken=localStorage.getItem(TOKEN_KEY)||'';
+if(savedToken){document.getElementById('login-token').value=savedToken;document.getElementById('remember-token').checked=true;}
+if(sessionStorage.getItem(AUTH_KEY)){document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';init();}
 
 // ── GITHUB API ────────────────────────────────────────────────────────────────
-function getToken(){return sessionStorage.getItem('gh_token')||'';}
+function getToken(){return sessionStorage.getItem('gh_token')||localStorage.getItem(TOKEN_KEY)||'';}
 async function ghFetch(path,opts={}){
   const token=getToken();
   const headers={'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
