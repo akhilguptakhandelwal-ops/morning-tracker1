@@ -28,6 +28,9 @@ jobs:
       - name: 📦 Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Remove old tracker database
+        run: rm -f tracker.db
+
       - name: 🚀 Run Morning Intelligence Tracker
         env:
           GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
