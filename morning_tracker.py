@@ -12,6 +12,7 @@ import os
 import re
 import sqlite3
 import textwrap
+import time
 from datetime import datetime
 
 import requests
@@ -448,7 +449,8 @@ def run():
             update_last_scraped(conn, src_id, content_id)
 
     all_success = True
-    for digest_name, bucket in digest_buckets.items():
+    digest_items = list(digest_buckets.items())
+    for idx, (digest_name, bucket) in enumerate(digest_items):
         reports = bucket["reports"]
         skipped = bucket["skipped"]
         errors = bucket["errors"]
@@ -479,6 +481,10 @@ def run():
                 "html_body": html_body,
             }
         )
+
+        if idx < len(digest_items) - 1:
+            log.info("Waiting 5 minutes before sending next digest...")
+            time.sleep(300)
 
     if not all_success:
         raise RuntimeError(

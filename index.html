@@ -262,6 +262,12 @@
           <div class="page-title">Sources</div>
           <div class="page-sub">Changes save directly to <code>morning_tracker.py</code> on GitHub</div>
         </div>
+        <div style="display:flex;justify-content:flex-end;gap:12px;margin-bottom:16px;align-items:center;">
+          <label class="field-label" style="margin:0;">Filter</label>
+          <select id="source-filter" onchange="renderSources()" style="width:260px;margin-bottom:0;">
+            <option value="all">All Sources</option>
+          </select>
+        </div>
         <div id="sources-sync-bar" class="sync-bar" style="display:none;"></div>
         <div class="form-panel">
           <h3>➕ Add New Source</h3>
@@ -383,6 +389,15 @@ function rebuildRecipients(content,recipients){
 // ── INIT ──────────────────────────────────────────────────────────────────────
 let cachedContent='',cachedSha='',cachedSources=[],cachedRecipients=[];
 
+function populateSourceFilter(){
+  const el=document.getElementById('source-filter');
+  if(!el) return;
+  const current=el.value||'all';
+  const categories=[...new Set(cachedSources.map(s=>s.category||'General'))].sort((a,b)=>a.localeCompare(b));
+  el.innerHTML=`<option value="all">All Sources</option>${categories.map(c=>`<option value="${c}">${c}</option>`).join('')}`;
+  if([...el.options].some(o=>o.value===current)) el.value=current;
+}
+
 async function init(){
   startClock(); updateGithubStatus();
   await loadFromGitHub();
@@ -403,12 +418,18 @@ async function loadFromGitHub(){
     cachedContent=content; cachedSha=sha;
     cachedSources=parseSources(content);
     cachedRecipients=parseRecipients(content);
+    populateSourceFilter();
     renderDashboard(); renderSources(); renderRecipients();
     toast('Live data loaded from GitHub ✅','success');
   }catch(e){
     toast('Could not load from GitHub: '+e.message,'error');
-    cachedSources=[{type:'youtube',name:'Fintex Pro',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UC6sN_Mv_wG76_0ZfPym80mQ'},{type:'website',name:'Income Tax India',url:'https://incometaxindia.gov.in'}];
+    cachedSources=[
+      {type:'website',name:'Taxguru',url:'https://taxguru.in',category:'Accounts and Taxation'},
+      {type:'youtube',name:'FinTaxPro',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCrzxy3Ij6P-SNVNbK1Z7Xzw',category:'Accounts and Taxation'},
+      {type:'youtube',name:'Aishwarya Srinivasan - AI with Aish',url:'https://www.youtube.com/feeds/videos.xml?channel_id=UCzd4ZN716evEjtbJERBMTfg',category:'AI'}
+    ];
     cachedRecipients=['gupta_akhil@ymail.com','akhilgupta.khandelwal@gmail.com'];
+    populateSourceFilter();
     renderDashboard(); renderSources(); renderRecipients();
   }
 }
@@ -515,7 +536,13 @@ function toggleEmail(i){
 function renderSources(){
   const el=document.getElementById('sources-list');
   if(!cachedSources.length){el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No sources found.</div>';return;}
-  el.innerHTML=cachedSources.map((s,i)=>`<div class="card"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div><div style="font-size:11px;color:var(--text-dim);margin-top:6px;">Digest: ${s.category||'General'}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">${s.category||'General'}</span><button class="btn btn-sm btn-danger" onclick="removeSourceLive(${i})">🗑 Remove</button></div></div></div>`).join('');
+  const selected=(document.getElementById('source-filter')?.value)||'all';
+  const visible=selected==='all'?cachedSources:cachedSources.filter(s=>(s.category||'General')===selected);
+  if(!visible.length){el.innerHTML='<div style="color:var(--text-dim);font-size:13px;padding:20px;">No sources match this filter.</div>';return;}
+  el.innerHTML=visible.map(s=>{
+    const i=cachedSources.indexOf(s);
+    return `<div class="card"><div class="card-top"><div><div class="card-name">${s.name}</div><div class="card-url">${s.url}</div><div style="font-size:11px;color:var(--text-dim);margin-top:6px;">Digest: ${s.category||'General'}</div></div><div class="actions"><span class="badge ${s.type==='youtube'?'badge-yt':'badge-web'}">${s.type}</span><span class="badge badge-on">${s.category||'General'}</span><button class="btn btn-sm btn-danger" onclick="removeSourceLive(${i})">🗑 Remove</button></div></div></div>`;
+  }).join('');
 }
 
 async function addSourceLive(){
