@@ -315,7 +315,7 @@ def build_html_email(reports, skipped, run_date):
             <div><p style="font-size:16px;font-weight:700;color:#1a237e;margin:0">{report['source_name']}</p>
             <p style="font-size:12px;color:#888;margin:0"><a href="{report['url']}">{report['url']}</a></p></div>
           </div>
-          <p style="color:#555;font-size:13px;margin:0 0 12px"><strong>Latest:</strong> {report['content_title']}</p>
+          <p style="color:#555;font-size:13px;margin:0 0 12px"><strong>Latest:</strong> <a href="{report['url']}">{report['content_title']}</a></p>
           {report['summary_html']}</div>"""
 
     for item in skipped:
