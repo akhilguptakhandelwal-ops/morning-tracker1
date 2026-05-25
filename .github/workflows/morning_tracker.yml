@@ -26,16 +26,6 @@ jobs:
       - name: 📦 Install dependencies
         run: pip install -r requirements.txt
 
-      - name: 🔄 Reset state for fresh run
-        run: |
-          python -c "
-          import sqlite3
-          conn = sqlite3.connect('tracker.db')
-          conn.execute('UPDATE sources SET last_scraped_id=NULL')
-          conn.commit()
-          print('State reset — all sources will reprocess ✅')
-          "
-
       - name: 🚀 Run Morning Intelligence Tracker
         env:
           GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
