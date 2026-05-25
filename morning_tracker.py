@@ -90,7 +90,7 @@ def init_db():
                 (src_type, name, identifier, category),
             )
 
-        for email in ("gupta_akhil@ymail.com",):
+        for email in ("gupta_akhil@ymail.com", "akhil.gupta@safari.in"):
             conn.execute(
                 "INSERT OR IGNORE INTO recipients (email) VALUES (?)",
                 (email,),
