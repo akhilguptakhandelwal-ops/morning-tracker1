@@ -233,6 +233,15 @@ def fetch_youtube_transcript_text(video_id):
     return " ".join(chunk["text"] for chunk in raw_data if chunk.get("text"))
 
 
+def is_youtube_transcript_ip_blocked(error):
+    message = str(error or "")
+    return (
+        "YouTube is blocking requests from your IP" in message
+        or "RequestBlocked" in message
+        or "IpBlocked" in message
+    )
+
+
 def normalise_youtube_channel_page_url(identifier):
     if "youtube.com/feeds/videos.xml?channel_id=" in identifier:
         channel_id = identifier.split("channel_id=", 1)[-1].strip()
@@ -338,7 +347,13 @@ def scrape_latest_video_from_channel_page(page_url, fallback_title="Latest YouTu
             "Source: YouTube channel page fallback because transcript was unavailable.\n"
             f"Description:\n{description or 'Description unavailable.'}"
         )
-        log.warning("YouTube '%s' transcript failed, using channel-page fallback: %s", title, exc)
+        if is_youtube_transcript_ip_blocked(exc):
+            log.warning(
+                "YouTube '%s' transcript blocked by YouTube from GitHub Actions IP; using channel-page metadata fallback.",
+                title,
+            )
+        else:
+            log.warning("YouTube '%s' transcript failed, using channel-page fallback: %s", title, exc)
 
     return {"id": video_id, "title": title, "url": url, "raw_text": raw_text}
 
@@ -386,7 +401,13 @@ def scrape_youtube(identifier):
         log.info("YouTube '%s' using metadata fallback", title)
     except Exception as exc:
         raw_text = get_youtube_fallback_text(entry, url, title)
-        log.warning("YouTube '%s' transcript failed, using metadata fallback: %s", title, exc)
+        if is_youtube_transcript_ip_blocked(exc):
+            log.warning(
+                "YouTube '%s' transcript blocked by YouTube from GitHub Actions IP; using metadata fallback.",
+                title,
+            )
+        else:
+            log.warning("YouTube '%s' transcript failed, using metadata fallback: %s", title, exc)
 
     return {"id": video_id, "title": title, "url": url, "raw_text": raw_text}
 
