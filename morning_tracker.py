@@ -212,6 +212,20 @@ def get_youtube_fallback_text(entry, url, title):
     )
 
 
+def normalise_youtube_channel_page_url(identifier):
+    if "youtube.com/feeds/videos.xml?channel_id=" in identifier:
+        channel_id = identifier.split("channel_id=", 1)[-1].strip()
+        return f"https://www.youtube.com/channel/{channel_id}/videos"
+
+    if "youtube.com/watch?v=" in identifier:
+        return identifier
+
+    if identifier.rstrip("/").endswith("/videos"):
+        return identifier
+
+    return f"{identifier.rstrip('/')}/videos"
+
+
 def resolve_youtube_feed_url(identifier):
     if "youtube.com/feeds/videos.xml?channel_id=" in identifier:
         return identifier, None
@@ -242,19 +256,99 @@ def resolve_youtube_feed_url(identifier):
     return f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}", None
 
 
-def scrape_youtube(identifier):
-    feed_url, resolve_error = resolve_youtube_feed_url(identifier)
-    if not feed_url:
-        return {"error": resolve_error}
-
-    response, error = _get(feed_url)
+def get_video_metadata_from_page(url, fallback_title):
+    response, error = _get(url, retries=2, retry_delay=2)
     if not response:
-        return {"error": f"YouTube feed fetch failed: {error or 'Unknown error'}"}
+        return fallback_title, "", error
+
+    soup = BeautifulSoup(response.text, "html.parser")
+    meta_title = soup.find("meta", attrs={"property": "og:title"})
+    meta_description = soup.find("meta", attrs={"name": "description"}) or soup.find(
+        "meta", attrs={"property": "og:description"}
+    )
+
+    title = (
+        meta_title.get("content", "").strip()
+        if meta_title and meta_title.get("content")
+        else fallback_title
+    )
+    description = (
+        meta_description.get("content", "").strip()
+        if meta_description and meta_description.get("content")
+        else ""
+    )
+    return title or fallback_title, description, None
+
+
+def scrape_latest_video_from_channel_page(page_url, fallback_title="Latest YouTube video"):
+    response, error = _get(page_url, retries=2, retry_delay=2)
+    if not response:
+        return {"error": f"YouTube channel page fetch failed: {error or 'Unknown error'}"}
+
+    html = response.text
+    video_ids = []
+    for match in re.findall(r'"videoId":"([A-Za-z0-9_-]{11})"', html):
+        if match not in video_ids:
+            video_ids.append(match)
+
+    if not video_ids:
+        return {"error": "YouTube channel page returned no latest video IDs."}
+
+    video_id = video_ids[0]
+    url = f"https://www.youtube.com/watch?v={video_id}"
+    title, description, metadata_error = get_video_metadata_from_page(url, fallback_title)
+    if metadata_error:
+        log.warning("YouTube metadata page fetch failed for %s: %s", url, metadata_error)
+
+    raw_text = ""
+    try:
+        raw_text = " ".join(
+            chunk["text"] for chunk in YouTubeTranscriptApi.get_transcript(video_id)
+        )
+        log.info("YouTube '%s' transcript (%d chars)", title, len(raw_text))
+    except (TranscriptsDisabled, NoTranscriptFound):
+        raw_text = (
+            f"Video title: {title}\n"
+            "Source: YouTube channel page fallback because feed/transcript was unavailable.\n"
+            f"Description:\n{description or 'Description unavailable.'}"
+        )
+        log.info("YouTube '%s' using channel-page metadata fallback", title)
+    except Exception as exc:
+        raw_text = (
+            f"Video title: {title}\n"
+            "Source: YouTube channel page fallback because transcript was unavailable.\n"
+            f"Description:\n{description or 'Description unavailable.'}"
+        )
+        log.warning("YouTube '%s' transcript failed, using channel-page fallback: %s", title, exc)
+
+    return {"id": video_id, "title": title, "url": url, "raw_text": raw_text}
+
+
+def scrape_youtube(identifier):
+    page_url = normalise_youtube_channel_page_url(identifier)
+    feed_url, resolve_error = resolve_youtube_feed_url(identifier)
+    response = None
+    error = None
+    if feed_url:
+        response, error = _get(feed_url)
+    else:
+        log.warning("YouTube feed resolution failed for %s: %s", identifier, resolve_error)
+
+    if not response:
+        log.warning(
+            "Falling back to YouTube channel page scrape for %s because feed fetch failed.",
+            identifier,
+        )
+        return scrape_latest_video_from_channel_page(page_url)
 
     soup = BeautifulSoup(response.content, "xml")
     entry = soup.find("entry")
     if not entry:
-        return {"error": "YouTube feed returned no latest entry."}
+        log.warning(
+            "YouTube feed returned no latest entry for %s. Falling back to channel page.",
+            identifier,
+        )
+        return scrape_latest_video_from_channel_page(page_url)
 
     vid_tag = entry.find("videoId")
     video_id = (
