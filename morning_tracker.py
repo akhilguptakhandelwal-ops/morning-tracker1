@@ -64,11 +64,11 @@ def init_db():
 
         sources_seed = [
             ("youtube", "FinTaxPro",
-             "https://www.youtube.com/feeds/videos.xml?channel_id=UCrzxy3Ij6P-SNVNbK1Z7Xzw", "Accounts and Taxation"),
+             "https://www.youtube.com/@fintaxpro/videos", "Accounts and Taxation"),
             ("youtube", "Aishwarya Srinivasan - AI with Aish",
              "https://www.youtube.com/feeds/videos.xml?channel_id=UCzd4ZN716evEjtbJERBMTfg", "AI"),
             ("youtube", "GSTPLATFORM",
-             "https://www.youtube.com/feeds/videos.xml?channel_id=UC-z2bagW7XjAZ_gQfPG6zmg", "Accounts and Taxation"),
+             "https://www.youtube.com/@gstplatform/videos", "Accounts and Taxation"),
         ]
         for source_seed in sources_seed:
             if len(source_seed) == 4:
@@ -212,8 +212,31 @@ def get_youtube_fallback_text(entry, url, title):
     )
 
 
-def scrape_youtube(identifier):
+def resolve_youtube_feed_url(identifier):
+    if "youtube.com/feeds/videos.xml?channel_id=" in identifier:
+        return identifier, None
+
     response, error = _get(identifier)
+    if not response:
+        return None, f"YouTube channel page fetch failed: {error or 'Unknown error'}"
+
+    html = response.text
+    match = re.search(r'"channelId":"(UC[a-zA-Z0-9_-]{20,})"', html)
+    if not match:
+        match = re.search(r'itemprop="channelId"\s+content="(UC[a-zA-Z0-9_-]{20,})"', html)
+    if not match:
+        return None, "Could not resolve YouTube channel ID from channel page."
+
+    channel_id = match.group(1)
+    return f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}", None
+
+
+def scrape_youtube(identifier):
+    feed_url, resolve_error = resolve_youtube_feed_url(identifier)
+    if not feed_url:
+        return {"error": resolve_error}
+
+    response, error = _get(feed_url)
     if not response:
         return {"error": f"YouTube feed fetch failed: {error or 'Unknown error'}"}
 
