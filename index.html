@@ -273,9 +273,9 @@
           <h3>➕ Add New Source</h3>
           <div class="form-row">
             <div class="form-group"><label class="field-label">Source Name</label><input type="text" id="src-name" placeholder="e.g. TaxGuru"></div>
-            <div class="form-group"><label class="field-label">Type</label><select id="src-type"><option value="youtube">YouTube</option><option value="website">Website</option></select></div>
-            <div class="form-group"><label class="field-label">Digest Category</label><input type="text" id="src-category" placeholder="e.g. Finance &amp; Taxation"></div>
-            <div class="form-group full"><label class="field-label">URL</label><input type="text" id="src-url" placeholder="https://taxguru.in  or  youtube.com/feeds/videos.xml?channel_id=..."></div>
+            <div class="form-group"><label class="field-label">Type</label><select id="src-type" onchange="updateSourceFormForType()"><option value="youtube">YouTube</option><option value="website">Website</option></select></div>
+            <div class="form-group"><label class="field-label">Digest Category</label><select id="src-category"><option value="Accounts and Taxation">Accounts and Taxation</option><option value="AI">AI</option><option value="General">General</option></select></div>
+            <div class="form-group full"><label class="field-label">URL</label><input type="text" id="src-url" placeholder="https://www.youtube.com/feeds/videos.xml?channel_id="></div>
           </div>
           <button class="btn btn-success" onclick="addSourceLive()">➕ Add &amp; Save to GitHub</button>
         </div>
@@ -398,6 +398,7 @@ function rebuildRecipients(content,recipients){
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 let cachedContent='',cachedSha='',cachedSources=[],cachedRecipients=[];
+const YOUTUBE_FEED_PREFIX='https://www.youtube.com/feeds/videos.xml?channel_id=';
 
 function populateSourceFilter(){
   const el=document.getElementById('source-filter');
@@ -408,11 +409,25 @@ function populateSourceFilter(){
   if([...el.options].some(o=>o.value===current)) el.value=current;
 }
 
+function updateSourceFormForType(){
+  const type=document.getElementById('src-type')?.value;
+  const urlInput=document.getElementById('src-url');
+  if(!urlInput||!type) return;
+  if(type==='youtube'){
+    urlInput.placeholder=YOUTUBE_FEED_PREFIX;
+    if(!urlInput.value.trim()||urlInput.value==='https://taxguru.in') urlInput.value=YOUTUBE_FEED_PREFIX;
+  }else{
+    urlInput.placeholder='https://taxguru.in';
+    if(urlInput.value===YOUTUBE_FEED_PREFIX) urlInput.value='';
+  }
+}
+
 async function init(){
   startClock(); updateGithubStatus();
   await loadFromGitHub();
   loadHistory();
   loadSentEmails();
+  updateSourceFormForType();
 }
 
 function updateGithubStatus(){
@@ -565,7 +580,10 @@ async function addSourceLive(){
     const{content,sha}=await fetchFile(FILE);
     cachedSources.push({type,name,url,category});
     await pushFile(FILE,rebuildSources(content,cachedSources),sha,`Dashboard: add source "${name}"`);
-    ['src-name','src-category','src-url'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('src-name').value='';
+    document.getElementById('src-category').value='Accounts and Taxation';
+    document.getElementById('src-url').value='';
+    updateSourceFormForType();
     renderSources();renderDashboard();
     showSyncBar('sources','success','✅ Saved to GitHub! Takes effect on next run.');
     toast(`"${name}" added and saved ✅`,'success');
