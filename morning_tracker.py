@@ -221,13 +221,24 @@ def resolve_youtube_feed_url(identifier):
         return None, f"YouTube channel page fetch failed: {error or 'Unknown error'}"
 
     html = response.text
-    match = re.search(r'"channelId":"(UC[a-zA-Z0-9_-]{20,})"', html)
-    if not match:
-        match = re.search(r'itemprop="channelId"\s+content="(UC[a-zA-Z0-9_-]{20,})"', html)
-    if not match:
+    patterns = [
+        r'"channelId":"(UC[a-zA-Z0-9_-]{20,})"',
+        r'"externalId":"(UC[a-zA-Z0-9_-]{20,})"',
+        r'"browseId":"(UC[a-zA-Z0-9_-]{20,})"',
+        r'itemprop="channelId"\s+content="(UC[a-zA-Z0-9_-]{20,})"',
+        r'https://www\.youtube\.com/channel/(UC[a-zA-Z0-9_-]{20,})',
+        r'https://www\.youtube\.com/feeds/videos\.xml\?channel_id=(UC[a-zA-Z0-9_-]{20,})',
+    ]
+    channel_id = None
+    for pattern in patterns:
+        match = re.search(pattern, html)
+        if match:
+            channel_id = match.group(1)
+            break
+
+    if not channel_id:
         return None, "Could not resolve YouTube channel ID from channel page."
 
-    channel_id = match.group(1)
     return f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}", None
 
 
