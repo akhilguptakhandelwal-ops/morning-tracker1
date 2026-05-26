@@ -1,5 +1,44 @@
 [
   {
+    "timestamp": "2026-05-26T03:25:45.268445",
+    "date": "Tuesday, 26 May 2026",
+    "subject": "AI Digest - Tuesday, 26 May 2026",
+    "digest_name": "AI",
+    "recipients": [
+      "gupta_akhil@ymail.com",
+      "akhil.gupta@safari.in"
+    ],
+    "new_sources": [],
+    "no_update": [],
+    "errors": [
+      "Aishwarya Srinivasan - AI with Aish"
+    ],
+    "sent": true,
+    "report_count": 0,
+    "html_body": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><style>\n  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;margin:0;padding:0}\n  .wrapper{max-width:680px;margin:30px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.10)}\n  .header{background:linear-gradient(135deg,#1a237e,#283593);padding:32px 36px;color:#fff}\n  .header h1{margin:0 0 4px;font-size:22px;letter-spacing:.5px}\n  .header p{margin:0;opacity:.8;font-size:13px}\n  .card{border:1px solid #e3e8f0;border-radius:10px;margin:24px 28px;padding:24px;background:#fafbff}\n  .card-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;border-bottom:2px solid #e3e8f0;padding-bottom:12px}\n  .badge{background:#1a237e;color:#fff;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}\n  .badge.website{background:#00695c}\n  .ai-summary h3{color:#283593;font-size:14px;margin:16px 0 6px}\n  .ai-summary p,.ai-summary li{color:#333;font-size:14px;line-height:1.7}\n  .ai-summary ul{padding-left:20px;margin:6px 0}\n  .no-update{background:#f5f7fa;border:1px dashed #ccc;border-radius:10px;margin:16px 28px;padding:18px 24px;color:#888;font-size:14px;text-align:center}\n  .footer{text-align:center;padding:20px;font-size:12px;color:#aaa;border-top:1px solid #f0f0f0}\n  a{color:#1a237e}\n</style></head><body>\n<div class=\"wrapper\">\n  <div class=\"header\"><h1>AI Digest</h1><p>Tuesday, 26 May 2026 | Morning Intelligence Tracker</p></div>\n  <div class=\"no-update\">All sources encountered errors today. No summaries generated.</div>\n  <div class=\"footer\">Built by Morning Intelligence Tracker</div>\n</div></body></html>"
+  },
+  {
+    "timestamp": "2026-05-26T03:25:45.268445",
+    "date": "Tuesday, 26 May 2026",
+    "subject": "Accounts and Taxation Digest - Tuesday, 26 May 2026",
+    "digest_name": "Accounts and Taxation",
+    "recipients": [
+      "gupta_akhil@ymail.com",
+      "akhil.gupta@safari.in"
+    ],
+    "new_sources": [
+      "Taxguru"
+    ],
+    "no_update": [],
+    "errors": [
+      "FinTaxPro",
+      "GSTPLATFORM"
+    ],
+    "sent": true,
+    "report_count": 1,
+    "html_body": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><style>\n  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;margin:0;padding:0}\n  .wrapper{max-width:680px;margin:30px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.10)}\n  .header{background:linear-gradient(135deg,#1a237e,#283593);padding:32px 36px;color:#fff}\n  .header h1{margin:0 0 4px;font-size:22px;letter-spacing:.5px}\n  .header p{margin:0;opacity:.8;font-size:13px}\n  .card{border:1px solid #e3e8f0;border-radius:10px;margin:24px 28px;padding:24px;background:#fafbff}\n  .card-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;border-bottom:2px solid #e3e8f0;padding-bottom:12px}\n  .badge{background:#1a237e;color:#fff;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}\n  .badge.website{background:#00695c}\n  .ai-summary h3{color:#283593;font-size:14px;margin:16px 0 6px}\n  .ai-summary p,.ai-summary li{color:#333;font-size:14px;line-height:1.7}\n  .ai-summary ul{padding-left:20px;margin:6px 0}\n  .no-update{background:#f5f7fa;border:1px dashed #ccc;border-radius:10px;margin:16px 28px;padding:18px 24px;color:#888;font-size:14px;text-align:center}\n  .footer{text-align:center;padding:20px;font-size:12px;color:#aaa;border-top:1px solid #f0f0f0}\n  a{color:#1a237e}\n</style></head><body>\n<div class=\"wrapper\">\n  <div class=\"header\"><h1>Accounts and Taxation Digest</h1><p>Tuesday, 26 May 2026 | Morning Intelligence Tracker</p></div>\n  <div class=\"card\">\n          <div class=\"card-header\">\n            <span class=\"badge website\">Website</span>\n            <div><p style=\"font-size:16px;font-weight:700;color:#1a237e;margin:0\">Taxguru</p>\n            <p style=\"font-size:12px;color:#888;margin:0\"><a href=\"https://taxguru.in\">https://taxguru.in</a></p></div>\n          </div>\n          <p style=\"color:#555;font-size:13px;margin:0 0 12px\"><strong>Latest:</strong> <a href=\"https://taxguru.in\">Complete Tax Solution: Latest Tax News India, Tax Notification</a></p>\n          <div class=\"ai-summary\">\n  <h3>Core Message</h3><p>Regulatory bodies like SEBI and RBI are proposing new frameworks and amending governance rules, while courts continue to clarify GST compliance for businesses and provide relief for certain corporate defaults.</p>\n  <h3>Key Takeaways</h3><ul><li>SEBI has proposed new frameworks for strike prices of options contracts and IPO/re-listed scrip price discovery to address market integrity concerns.</li><li>Courts have reiterated that bona fide purchasers are generally not liable to lose Input Tax Credit solely due to suppliers' non-deposit of GST, and transit states cannot penalize pure inter-state transit without actual tax evasion.</li><li>The MCA's Companies Compliance Facilitation Scheme (CCFS-2026) offers a relief window by reducing additional filing fees for defaulting companies.</li><li>RBI has amended governance directions for Rural and Urban Co-operative Banks to prevent directors from circumventing tenure limits.</li><li>A CA certificate format clarifies that dealing and investment in securities are outside the scope of GST, exempting companies solely engaged in such activities from GST registration.</li></ul>\n  <h3>Action Items / Alerts</h3><p>Nainital Bank Limited has invited CA firms for Statutory Central Auditor Empanelment for FY 2026-27. FSSAI revised contaminant limits in pulses, oils, and seafood will be effective from December 1, 2026. The ICAI's 60-Tax Audit assignment ceiling via the UDIN system will commence from April 1, 2026.</p>\n</div></div>\n  <div class=\"footer\">Built by Morning Intelligence Tracker</div>\n</div></body></html>"
+  },
+  {
     "timestamp": "2026-05-25T12:59:43.311331",
     "date": "Monday, 25 May 2026",
     "subject": "AI Digest - Monday, 25 May 2026",
