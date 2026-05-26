@@ -157,14 +157,27 @@ HEADERS = {
 }
 
 
-def _get(url, timeout=20):
-    try:
-        response = requests.get(url, headers=HEADERS, timeout=timeout)
-        response.raise_for_status()
-        return response
-    except requests.RequestException as exc:
-        log.error("HTTP error fetching %s: %s", url, exc)
-        return None
+def _get(url, timeout=20, retries=3, retry_delay=5):
+    last_error = None
+    for attempt in range(1, retries + 1):
+        try:
+            response = requests.get(url, headers=HEADERS, timeout=timeout)
+            response.raise_for_status()
+            return response, None
+        except requests.RequestException as exc:
+            last_error = str(exc)
+            if attempt < retries:
+                log.warning(
+                    "HTTP error fetching %s (attempt %d/%d): %s",
+                    url,
+                    attempt,
+                    retries,
+                    exc,
+                )
+                time.sleep(retry_delay)
+            else:
+                log.error("HTTP error fetching %s: %s", url, exc)
+    return None, last_error
 
 
 def get_youtube_fallback_text(entry, url, title):
@@ -178,7 +191,7 @@ def get_youtube_fallback_text(entry, url, title):
                 break
 
     if not description:
-        response = _get(url)
+        response, _ = _get(url)
         if response:
             page = BeautifulSoup(response.text, "html.parser")
             meta = page.find("meta", attrs={"name": "description"}) or page.find(
@@ -202,14 +215,14 @@ def get_youtube_fallback_text(entry, url, title):
 
 
 def scrape_youtube(identifier):
-    response = _get(identifier)
+    response, error = _get(identifier)
     if not response:
-        return None
+        return {"error": f"YouTube feed fetch failed: {error or 'Unknown error'}"}
 
     soup = BeautifulSoup(response.content, "xml")
     entry = soup.find("entry")
     if not entry:
-        return None
+        return {"error": "YouTube feed returned no latest entry."}
 
     vid_tag = entry.find("videoId")
     video_id = (
@@ -236,9 +249,9 @@ def scrape_youtube(identifier):
 
 
 def scrape_website(identifier):
-    response = _get(identifier)
+    response, error = _get(identifier)
     if not response:
-        return None
+        return {"error": f"Website fetch failed: {error or 'Unknown error'}"}
 
     soup = BeautifulSoup(response.content, "html.parser")
     for tag in soup(
@@ -255,6 +268,8 @@ def scrape_website(identifier):
         if len(tag.get_text(" ", strip=True)) > 40
     ]
     raw_text = re.sub(r"\s{3,}", "\n", "\n".join(blocks[:120]))
+    if not raw_text.strip():
+        return {"error": "Website content extraction returned no usable text."}
     content_id = hashlib.md5(raw_text[:500].encode()).hexdigest()[:12]
     log.info("Website '%s' scraped (%d chars)", title, len(raw_text))
     return {"id": content_id, "title": title, "url": identifier, "raw_text": raw_text}
@@ -279,20 +294,35 @@ def summarise_with_gemini(source_name, raw_text):
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY not configured.")
 
-    try:
-        from google import genai
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            from google import genai
 
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=f"Source: {source_name}\n\nContent:\n{raw_text[:15000]}",
-            config={"system_instruction": SYSTEM_INSTRUCTION},
-        )
-        log.info("Gemini completed for '%s'", source_name)
-        return (response.text or "").strip()
-    except Exception as exc:
-        log.error("Gemini error for '%s': %s", source_name, exc)
-        return f'<div class="ai-summary"><p><em>Gemini failed: {exc}</em></p></div>'
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=f"Source: {source_name}\n\nContent:\n{raw_text[:15000]}",
+                config={"system_instruction": SYSTEM_INSTRUCTION},
+            )
+            log.info("Gemini completed for '%s'", source_name)
+            return (response.text or "").strip(), None
+        except Exception as exc:
+            last_error = str(exc)
+            if attempt < 3:
+                log.warning(
+                    "Gemini error for '%s' (attempt %d/3): %s",
+                    source_name,
+                    attempt,
+                    exc,
+                )
+                time.sleep(5 * attempt)
+            else:
+                log.error("Gemini error for '%s': %s", source_name, exc)
+    return (
+        f'<div class="ai-summary"><p><em>Gemini failed: {last_error}</em></p></div>',
+        f"Gemini failed: {last_error}",
+    )
 
 
 EMAIL_CSS = """<style>
@@ -314,7 +344,7 @@ EMAIL_CSS = """<style>
 </style>"""
 
 
-def build_html_email(digest_name, reports, skipped, run_date):
+def build_html_email(digest_name, reports, skipped, error_details, run_date):
     cards = ""
 
     for report in reports:
@@ -333,8 +363,12 @@ def build_html_email(digest_name, reports, skipped, run_date):
         cards += f"""<div class="no-update"><strong>{item['name']}</strong> - No new updates since last digest.
           <br><small><a href="{item['url']}">{item['url']}</a></small></div>"""
 
-    if not reports and not skipped:
-        cards = '<div class="no-update">All sources encountered errors today. No summaries generated.</div>'
+    for item in error_details:
+        cards += f"""<div class="no-update"><strong>{item['name']}</strong> - {item['message']}
+          <br><small>{item['category']}</small></div>"""
+
+    if not reports and not skipped and not error_details:
+        cards = '<div class="no-update">No source activity was available for this digest.</div>'
 
     return f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">{EMAIL_CSS}</head><body>
 <div class="wrapper">
@@ -413,7 +447,7 @@ def run():
 
             bucket = digest_buckets.setdefault(
                 src_category,
-                {"reports": [], "skipped": [], "errors": []},
+                {"reports": [], "skipped": [], "errors": [], "error_details": []},
             )
 
             scraper = scrapers.get(src_type)
@@ -423,6 +457,16 @@ def run():
             result = scraper(src_url)
             if not result:
                 bucket["errors"].append(src_name)
+                bucket["error_details"].append(
+                    {"name": src_name, "message": "Unknown scraper failure.", "category": src_category}
+                )
+                continue
+
+            if result.get("error"):
+                bucket["errors"].append(src_name)
+                bucket["error_details"].append(
+                    {"name": src_name, "message": result["error"], "category": src_category}
+                )
                 continue
 
             content_id = result["id"]
@@ -431,7 +475,7 @@ def run():
                 bucket["skipped"].append({"name": src_name, "url": result["url"]})
                 continue
 
-            summary_html = summarise_with_gemini(src_name, result["raw_text"])
+            summary_html, summary_error = summarise_with_gemini(src_name, result["raw_text"])
             bucket["reports"].append(
                 {
                     "source_type": src_type,
@@ -441,6 +485,10 @@ def run():
                     "summary_html": summary_html,
                 }
             )
+            if summary_error:
+                bucket["error_details"].append(
+                    {"name": src_name, "message": summary_error, "category": src_category}
+                )
             update_last_scraped(conn, src_id, content_id)
 
     all_success = True
@@ -449,6 +497,7 @@ def run():
         reports = bucket["reports"]
         skipped = bucket["skipped"]
         errors = bucket["errors"]
+        error_details = bucket["error_details"]
         log.info(
             "Sending digest [%s] - %d new, %d no-update, %d errors",
             digest_name,
@@ -457,7 +506,7 @@ def run():
             len(errors),
         )
         subject = f"{digest_name} Digest - {run_date}"
-        html_body = build_html_email(digest_name, reports, skipped, run_date)
+        html_body = build_html_email(digest_name, reports, skipped, error_details, run_date)
         success = send_via_apps_script(recipients, html_body, subject)
         all_success = all_success and success
 
@@ -471,6 +520,7 @@ def run():
                 "new_sources": [r["source_name"] for r in reports],
                 "no_update": [s["name"] for s in skipped],
                 "errors": errors,
+                "error_details": error_details,
                 "sent": success,
                 "report_count": len(reports),
                 "html_body": html_body,
