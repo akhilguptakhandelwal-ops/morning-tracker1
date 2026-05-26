@@ -324,21 +324,32 @@ def summarise_with_gemini(source_name, raw_text):
 
 
 EMAIL_CSS = """<style>
-  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;margin:0;padding:0}
-  .wrapper{max-width:680px;margin:30px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.10)}
-  .header{background:linear-gradient(135deg,#1a237e,#283593);padding:32px 36px;color:#fff}
-  .header h1{margin:0 0 4px;font-size:22px;letter-spacing:.5px}
-  .header p{margin:0;opacity:.8;font-size:13px}
-  .card{border:1px solid #e3e8f0;border-radius:10px;margin:24px 28px;padding:24px;background:#fafbff}
-  .card-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;border-bottom:2px solid #e3e8f0;padding-bottom:12px}
-  .badge{background:#1a237e;color:#fff;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
-  .badge.website{background:#00695c}
-  .ai-summary h3{color:#283593;font-size:14px;margin:16px 0 6px}
-  .ai-summary p,.ai-summary li{color:#333;font-size:14px;line-height:1.7}
-  .ai-summary ul{padding-left:20px;margin:6px 0}
-  .no-update{background:#f5f7fa;border:1px dashed #ccc;border-radius:10px;margin:16px 28px;padding:18px 24px;color:#888;font-size:14px;text-align:center}
-  .footer{text-align:center;padding:20px;font-size:12px;color:#aaa;border-top:1px solid #f0f0f0}
-  a{color:#1a237e}
+  body{font-family:Segoe UI,Arial,sans-serif;background:#eef2f7;margin:0;padding:0;color:#152033}
+  .wrapper{max-width:720px;margin:24px auto;background:#ffffff;border:1px solid #dbe3ef;border-radius:18px;overflow:hidden}
+  .preheader{display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all}
+  .header{background:#1f3c88;padding:28px 32px;color:#ffffff}
+  .header h1{margin:0 0 6px;font-size:30px;line-height:1.2;font-weight:700}
+  .header p{margin:0;font-size:15px;line-height:1.5;color:#d8e3ff}
+  .intro{padding:18px 32px 0;font-size:15px;line-height:1.7;color:#41506a}
+  .card{border:1px solid #dbe3ef;border-radius:16px;margin:20px 24px;padding:24px;background:#ffffff}
+  .card-header{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #e6edf6}
+  .badge{display:inline-block;background:#1f3c88;color:#ffffff;border-radius:999px;padding:5px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+  .badge.website{background:#0f766e}
+  .source-name{font-size:24px;line-height:1.25;font-weight:700;color:#1a2850;margin:0 0 6px}
+  .source-url{font-size:13px;line-height:1.5;color:#5f6f89;word-break:break-all}
+  .latest-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6d7c95;margin:0 0 8px}
+  .latest-link{font-size:19px;line-height:1.45;color:#163b85;text-decoration:none;font-weight:600}
+  .latest-link:hover{text-decoration:underline}
+  .open-link{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;background:#eff4ff;color:#163b85;text-decoration:none;font-size:13px;font-weight:700}
+  .ai-summary h3{color:#1f3c88;font-size:15px;line-height:1.4;margin:20px 0 8px}
+  .ai-summary p,.ai-summary li{color:#1f2937;font-size:16px;line-height:1.7}
+  .ai-summary ul{padding-left:22px;margin:8px 0}
+  .no-update{background:#f7f9fc;border:1px solid #dbe3ef;border-radius:14px;margin:16px 24px;padding:18px 20px;color:#53627b;font-size:15px;line-height:1.6}
+  .error-box{background:#fff7f7;border:1px solid #f0c7c7;border-radius:14px;margin:16px 24px;padding:18px 20px}
+  .error-title{font-size:14px;font-weight:700;color:#9f2f2f;margin:0 0 6px}
+  .error-text{font-size:14px;line-height:1.6;color:#7a4242}
+  .footer{text-align:center;padding:22px 24px 28px;font-size:12px;line-height:1.6;color:#7b8799;border-top:1px solid #edf2f7}
+  a{color:#163b85}
 </style>"""
 
 
@@ -351,10 +362,12 @@ def build_html_email(digest_name, reports, skipped, error_details, run_date):
         cards += f"""<div class="card">
           <div class="card-header">
             <span class="{badge}">{label}</span>
-            <div><p style="font-size:16px;font-weight:700;color:#1a237e;margin:0">{report['source_name']}</p>
-            <p style="font-size:12px;color:#888;margin:0"><a href="{report['url']}">{report['url']}</a></p></div>
+            <div><p class="source-name">{report['source_name']}</p>
+            <p class="source-url"><a href="{report['url']}">{report['url']}</a></p></div>
           </div>
-          <p style="color:#555;font-size:13px;margin:0 0 12px"><strong>Latest:</strong> <a href="{report['url']}">{report['content_title']}</a></p>
+          <p class="latest-label">Latest item</p>
+          <a class="latest-link" href="{report['url']}">{report['content_title']}</a>
+          <br><a class="open-link" href="{report['url']}">Open source</a>
           {report['summary_html']}</div>"""
 
     for item in skipped:
@@ -362,15 +375,16 @@ def build_html_email(digest_name, reports, skipped, error_details, run_date):
           <br><small><a href="{item['url']}">{item['url']}</a></small></div>"""
 
     for item in error_details:
-        cards += f"""<div class="no-update"><strong>{item['name']}</strong> - {item['message']}
-          <br><small>{item['category']}</small></div>"""
+        cards += f"""<div class="error-box"><div class="error-title">{item['name']}</div><div class="error-text">{item['message']}<br><small>{item['category']}</small></div></div>"""
 
     if not reports and not skipped and not error_details:
         cards = '<div class="no-update">No source activity was available for this digest.</div>'
 
     return f"""<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">{EMAIL_CSS}</head><body>
+<div class="preheader">{digest_name} updates for {run_date}</div>
 <div class="wrapper">
   <div class="header"><h1>{digest_name} Digest</h1><p>{run_date} | Morning Intelligence Tracker</p></div>
+  <div class="intro">A compact morning brief with the latest items, summaries, and any source issues that need attention.</div>
   {cards}
   <div class="footer">Built by Morning Intelligence Tracker</div>
 </div></body></html>"""
