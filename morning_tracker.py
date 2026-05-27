@@ -525,7 +525,17 @@ def build_html_email(digest_name, reports, skipped, error_details, run_date):
     for report in reports:
         badge = "badge website" if report["source_type"] == "website" else "badge"
         label = "Website" if report["source_type"] == "website" else "YouTube"
-        cards += f"""<div class="card">
+        if report["source_type"] == "youtube":
+            cards += f"""<div class="card">
+          <div class="card-header">
+            <span class="{badge}">{label}</span>
+            <div><p class="source-name">{report['source_name']}</p></div>
+          </div>
+          <a class="latest-link" href="{report['url']}">{report['content_title']}</a>
+          {report['summary_html']}
+          <br><a class="open-link" href="{report['url']}">Open video</a></div>"""
+        else:
+            cards += f"""<div class="card">
           <div class="card-header">
             <span class="{badge}">{label}</span>
             <div><p class="source-name">{report['source_name']}</p>
